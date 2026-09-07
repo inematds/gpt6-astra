@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GPT-6 Astra na prática · INEMA.CLUB PRO</title>
+<meta name="description" content="Curso para profissionais 40+ que já usam o ChatGPT e querem delegar tarefas inteiras ao GPT-6 Astra: ligar o modelo, pedir bem, deixar ele usar o navegador, iterar em versões, dar um guia de estilo, controlar a cota e usar ferramentas extras. Sem programar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0D14;--bg2:#15131d;--panel:#1a1824;--ink:#ECE6D9;--ink-soft:#C7C2D0;--muted:#948DA6;--faint:#6C6580;
+    --line:#2A2637;--line2:#37324a;--accent:#7CE0C6;--accent-ink:#0E0D14;--warm:#F2B45C;
+    --serif:"Newsreader",Georgia,serif;--sans:"Inter",system-ui,sans-serif;--mono:"Space Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+  header.top{padding:26px 0}
+  header.top .wrap{display:flex;align-items:center;gap:10px}
+  header.top .mark{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--accent);text-decoration:none;font-weight:700}
+  header.top .pro{background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:2px 6px;font-size:9.5px;font-weight:700;letter-spacing:.1em;text-decoration:none;margin-left:8px}
+  header.top .course{color:var(--muted);font-size:12px;letter-spacing:.04em;border-left:1px solid var(--line2);padding-left:10px;margin-left:2px;font-family:var(--mono)}
+  .hero{position:relative;padding:10vh 0 9vh;border-bottom:1px solid var(--line);overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(55% 48% at 80% 20%,rgba(124,224,198,.14),transparent 60%),radial-gradient(90% 90% at 50% 40%,var(--bg2),var(--bg) 72%)}
+  .hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:40px;align-items:center}
+  .hero svg{width:100%;height:auto;max-width:360px;justify-self:end}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin:0 0 18px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(36px,6vw,64px);line-height:1.05;letter-spacing:-.02em;margin:0 0 22px;max-width:18ch}
+  h1 em{font-style:italic;color:var(--accent)}
+  .lead{font-family:var(--serif);font-size:clamp(18px,2vw,22px);line-height:1.55;color:var(--ink-soft);max-width:46ch;margin:0 0 34px}
+  .cta{display:inline-block;font-family:var(--mono);font-size:13px;letter-spacing:.06em;background:var(--accent);color:var(--accent-ink);text-decoration:none;border-radius:99px;padding:15px 26px;font-weight:700}
+  .cta:hover{opacity:.92}
+  .sub{color:var(--muted);font-size:13.5px;margin-top:14px;font-family:var(--mono)}
+  section{padding:8vh 0}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+  h2{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.6vw,36px);margin:0 0 28px}
+  .resultados{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .resultado{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:22px 24px}
+  .resultado p{margin:0;font-size:15px;color:var(--ink-soft);line-height:1.55}
+  .resultado p b{color:var(--ink)}
+  .aulas{display:grid;gap:14px}
+  .au{display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:center;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 22px}
+  .au .num{font-family:var(--serif);font-size:26px;color:var(--accent);text-align:center}
+  .au h3{font-family:var(--serif);font-weight:500;font-size:19px;margin:0 0 4px}
+  .au p{margin:0;color:var(--muted);font-size:14px}
+  .au .meta{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;text-align:right}
+  .au:hover{border-color:var(--accent)}
+  .publico{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .publico .col{background:var(--panel);padding:22px 24px}
+  .publico .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px}
+  .publico .col.sim .lbl{color:var(--accent)}
+  .publico .col.nao .lbl{color:var(--muted)}
+  .publico ul{margin:0;padding:0;list-style:none}
+  .publico li{position:relative;padding-left:20px;margin:0 0 10px;color:var(--ink-soft);font-size:14.5px;line-height:1.5}
+  .publico li::before{content:"—";position:absolute;left:0;color:var(--faint)}
+  .como{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+  .como div{border-left:2px solid var(--accent);padding:4px 0 4px 18px}
+  .como b{display:block;font-family:var(--serif);font-size:18px;font-weight:500;margin-bottom:4px}
+  .como p{margin:0;color:var(--muted);font-size:14px}
+  footer{border-top:1px solid var(--line);padding:6vh 0 8vh;color:var(--faint);text-align:center;font-family:var(--serif);font-style:italic}
+  @media(max-width:720px){ .publico{grid-template-columns:1fr} .hero .wrap{grid-template-columns:1fr} .hero svg{max-width:240px;justify-self:start} .au{grid-template-columns:40px 1fr} .au .meta{grid-column:2;text-align:left} }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="mark" href="https://inema.club" target="_blank" rel="noopener">INEMA.CLUB</a>
+  <a class="pro" href="https://inema.pro" target="_blank" rel="noopener">PRO</a>
+  <span class="course">GPT-6 Astra na prática</span>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <p class="kicker">IA para o seu trabalho · set/2026</p>
+    <h1>Delegue a tarefa inteira <em>ao GPT-6 Astra</em></h1>
+    <p class="lead">Saia sabendo entregar uma tarefa completa ao novo assistente — no seu computador, no seu navegador, com o seu gosto — e conferir o resultado antes de dar por pronto. Sem programar, sem vídeo, no seu tempo.</p>
+    <a class="cta" href="curso.html#trilha">começar agora →</a>
+    <p class="sub">8 aulas · 18 a 24 min cada · ~3h no total · sem baixar nada além do que você já usa · funciona no celular e no computador</p>
+  </div>
+  <svg viewBox="0 0 300 240" fill="none" aria-hidden="true">
+    <rect x="20" y="150" width="260" height="60" rx="8" stroke="var(--accent)" stroke-width="2" opacity=".6"/>
+    <rect x="45" y="70" width="80" height="62" rx="4" fill="none" stroke="var(--ink-soft)" stroke-width="2"/>
+    <rect x="52" y="62" width="80" height="62" rx="4" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="2"/>
+    <rect x="59" y="54" width="80" height="62" rx="4" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="2"/>
+    <path d="M70 72h56M70 86h40M70 100h48" stroke="var(--muted)" stroke-width="2"/>
+    <path d="M150 95h40" stroke="var(--accent)" stroke-width="2.5"/>
+    <path d="M182 87l10 8-10 8" stroke="var(--accent)" stroke-width="2.5" fill="none"/>
+    <rect x="200" y="58" width="80" height="62" rx="4" fill="var(--panel)" stroke="var(--ink-soft)" stroke-width="2"/>
+    <path d="M211 76h56M211 90h40M211 104h48" stroke="var(--muted)" stroke-width="2"/>
+    <circle cx="255" cy="92" r="20" stroke="var(--accent)" stroke-width="2.5" opacity=".9"/>
+    <path d="M245 92l7 7 13-14" stroke="var(--accent)" stroke-width="3" fill="none"/>
+    <text x="150" y="188" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--muted)">pedido → feito → conferido</text>
+  </svg>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">O que você sai sabendo fazer</p>
+  <h2>Resultado, não teoria</h2>
+  <div class="resultados">
+    <div class="resultado"><p><b>Ligar o Astra</b> no aplicativo do ChatGPT do seu computador, confirmar pelo próprio assistente que ele está ativo e não perder a conversa de trabalho.</p></div>
+    <div class="resultado"><p><b>Escrever um pedido de tarefa completa</b> — resultado, lugar e prova — que ele executa sem você explicar cada clique.</p></div>
+    <div class="resultado"><p><b>Deixar ele usar o navegador</b> por você, terminando em rascunhos que você confere em um minuto antes de liberar.</p></div>
+    <div class="resultado"><p><b>Iterar sem medo</b>: pedir versão nova, comparar, voltar atrás e testar ideias ousadas numa cópia.</p></div>
+    <div class="resultado"><p><b>Dar o seu gosto</b> num guia de estilo de uma página, para a primeira versão já vir com a sua cara.</p></div>
+    <div class="resultado"><p><b>Controlar a cota</b> semanal, reservar o modelo caro para o que exige juízo e pedir ao Astra que use ferramentas extras — vídeo, 3D, planilha.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Como funciona</p>
+  <h2>Uma trilha, oito aulas, no seu ritmo</h2>
+  <div class="como">
+    <div><b>Leitura calma</b><p>Cada aula abre com o que você vai conseguir fazer e quanto tempo leva. Sem vídeo, sem pressa.</p></div>
+    <div><b>Prática de verdade</b><p>Toda aula termina com uma tarefa no seu trabalho real — um pedido para colar, uma conferência para fazer. Nunca um terminal.</p></div>
+    <div><b>Memória que volta</b><p>Grife um trecho e ele vira um cartão de revisão. As perguntas voltam sozinhas na hora certa de lembrar.</p></div>
+    <div><b>Exemplos de gente real</b><p>Uma arquiteta autônoma e uma contadora de escritório pequeno atravessam as oito aulas com as tarefas delas.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Para quem é</p>
+  <h2>Feito para o seu momento</h2>
+  <div class="publico">
+    <div class="col sim">
+      <p class="lbl">é para você se</p>
+      <ul>
+        <li>Você é arquiteta, contadora ou outro profissional que já usa o ChatGPT para textos e quer entregar tarefas inteiras — não só pedir texto.</li>
+        <li>Você tem pouco tempo, nenhuma base técnica e não quer abrir um terminal.</li>
+        <li>Você prefere aprender fazendo, no seu próprio trabalho, com exemplos que se parecem com o seu dia.</li>
+      </ul>
+    </div>
+    <div class="col nao">
+      <p class="lbl">não é para você se</p>
+      <ul>
+        <li>Você programa e quer o detalhe técnico de comandos, agentes e integrações (procure os cursos técnicos da trilha Codex no INEMA.PRO).</li>
+        <li>Você quer um curso com vídeo-aula tradicional.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <p class="eyebrow">Trilha</p>
+  <h2>Do início ao fim</h2>
+  <div class="aulas">
+    <a class="au" href="curso.html#aula-1"><div class="num">1</div><div><h3>De responder a fazer: o que mudou</h3><p>Saia com a diferença entre pedir um texto e delegar uma tarefa clara — e 3 tarefas suas escolhidas.</p></div><div class="meta">22 min</div></a>
+    <a class="au" href="curso.html#aula-2"><div class="num">2</div><div><h3>Ligando o Astra no que você já usa</h3><p>Saia com o Astra ativo e confirmado no aplicativo do computador, e a conversa de trabalho fixada.</p></div><div class="meta">18 min</div></a>
+    <a class="au" href="curso.html#aula-3"><div class="num">3</div><div><h3>Peça o resultado, não o passo a passo</h3><p>Saia com o seu primeiro pedido de tarefa completa — resultado, lugar e prova — colado e conferido.</p></div><div class="meta">24 min</div></a>
+    <a class="au" href="curso.html#aula-4"><div class="num">4</div><div><h3>O assistente que usa o navegador por você</h3><p>Saia com o navegador conectado, um rascunho real preparado por ele e o hábito das três olhadas.</p></div><div class="meta">20 min</div></a>
+    <a class="au" href="curso.html#aula-5"><div class="num">5</div><div><h3>Iterar sem medo: versões e voltar atrás</h3><p>Saia sabendo pedir uma nova versão, comparar e restaurar a anterior sem perder nada.</p></div><div class="meta">22 min</div></a>
+    <a class="au" href="curso.html#aula-6"><div class="num">6</div><div><h3>Dê a ele o seu gosto: o guia de estilo</h3><p>Saia com um guia de uma página — 2 exemplos e 5 regras — anexado ao seu primeiro pedido.</p></div><div class="meta">24 min</div></a>
+    <a class="au" href="curso.html#aula-7"><div class="num">7</div><div><h3>Cota de uso e o truque de orquestrar</h3><p>Saia sabendo ler o medidor, prever quando acaba e separar o que exige o modelo caro.</p></div><div class="meta">24 min</div></a>
+    <a class="au" href="curso.html#aula-8"><div class="num">8</div><div><h3>Ferramentas na mão do assistente</h3><p>Saia reconhecendo quando a tarefa pede vídeo, 3D ou planilha — e com o seu vídeo de 30 segundos pronto.</p></div><div class="meta">24 min</div></a>
+  </div>
+  <p style="margin-top:28px"><a class="cta" href="curso.html#trilha">ver a trilha completa →</a></p>
+</div></section>
+
+<footer><div class="wrap">GPT-6 Astra na prática · INEMA.CLUB PRO · telas descritas em set/2026</div></footer>
+
+</body>
+</html>
