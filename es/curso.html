@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+
+<!-- Curso INEMA v5 — "GPT-6 Astra na prática". Protocolo de descoberta registrado abaixo. -->
+<html data-theme="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="gpt6astra-v5" name="curso"/>
+<title>GPT-6 Astra en la práctica · INEMA.CLUB PRO</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="../assets/aula.css" rel="stylesheet"/>
+<script>(function(){try{var m=document.querySelector('meta[name=curso]');var CK=(m&&m.content)||'v5:curso';var s=JSON.parse(localStorage.getItem(CK));if(s&&s.prefs&&s.prefs.theme)document.documentElement.setAttribute('data-theme',s.prefs.theme);}catch(e){}})();</script>
+<!--
+  PROTOCOLO DE DESCOBERTA (SKILL.md, Passo 0 — registrado como metadado).
+  Respostas ASSUMIDAS pelo autor (curso gerado de ponta a ponta sem o usuário presente; cada
+  linha pode ser corrigida em uma resposta e o curso ajustado):
+  - Público específico: profissionais 40+, não-técnicos, que já usam o ChatGPT para textos e
+    querem usar o novo modelo (GPT-6 Astra) para delegar tarefas inteiras — não só pedir texto.
+  - Profissões-alvo (≥2): arquiteta autônoma · contadora de escritório pequeno.
+  - Familiaridade com tecnologia: usa ChatGPT, WhatsApp, e-mail e planilha; nunca abriu um
+    terminal e não quer abrir.
+  - Resultado prático esperado: ativar o Astra no computador, escrever um pedido de tarefa
+    completa, deixar o assistente usar o navegador e conferir o resultado, iterar em versões
+    sem perder nada, dar um guia de estilo próprio, controlar a cota de uso e reconhecer quando
+    uma tarefa pede uma ferramenta extra.
+  - Tempo por sessão: 15–20 min por aula, 8 aulas.
+  - Versão das telas descritas: ChatGPT (aplicativo de computador) e aplicativo Codex, set/2026.
+-->
+<style>
+  .view{display:none}.view.active{display:block}
+  .pcodewrap .pcode{padding-right:92px} /* o botão "copiar" do motor não cobre o fim da 1ª linha */
+  .lnav{max-width:1160px;margin:0 auto 5vh;padding:0 clamp(24px,5vw,60px);display:flex;justify-content:space-between;gap:12px}
+  .lnav a{font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--line2);border-radius:12px;padding:12px 16px}
+  .lnav a:hover{border-color:var(--accent);color:var(--ink)}
+  #v-trilha .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+  #v-trilha .t-hero{position:relative;overflow:hidden;padding:20vh 0 8vh;border-bottom:1px solid var(--line)}
+  #v-trilha h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,6.4vw,72px);line-height:1;letter-spacing:-.025em;margin:0 0 22px}
+  #v-trilha h1 em{font-style:italic;color:var(--accent)}
+  #v-trilha .lead{font-family:var(--serif);font-size:clamp(19px,2.1vw,24px);line-height:1.5;color:var(--ink-soft);max-width:46ch;margin:0 0 30px}
+  #v-trilha section{padding:8vh 0}
+  #v-trilha .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+  #v-trilha h2{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.6vw,38px);margin:0 0 28px}
+  #v-trilha .aulas{display:grid;gap:14px}
+  #v-trilha .au{display:grid;grid-template-columns:56px 1fr auto;gap:20px;align-items:center;text-decoration:none;color:inherit;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 24px}
+  #v-trilha .au .num{font-family:var(--serif);font-size:30px;color:var(--accent);text-align:center}
+  #v-trilha .au h3{font-family:var(--serif);font-weight:500;font-size:21px;margin:0 0 5px}
+  #v-trilha .au p{margin:0;color:var(--muted);font-size:14.5px}
+  #v-trilha .au .meta{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap;text-align:right}
+  #v-trilha .au .prog{position:static;margin-top:10px;height:5px;border-radius:99px;background:var(--line);overflow:hidden;max-width:220px;width:auto}
+  #v-trilha .au .prog i{display:block;height:100%;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+  #v-trilha footer{max-width:1080px;margin:0 auto;padding:6vh clamp(24px,5vw,60px) 12vh;color:var(--faint);text-align:center;font-family:var(--serif);font-style:italic;border-top:1px solid var(--line)}
+  @media(max-width:720px){#v-trilha .au{grid-template-columns:44px 1fr}#v-trilha .au .meta{grid-column:2;text-align:left}}
+</style>
+<link href="https://inematds.github.io/gpt6-astra/curso.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/gpt6-astra/en/curso.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/gpt6-astra/es/curso.html" hreflang="es" rel="alternate"/></head>
+<body><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../curso.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../en/curso.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./curso.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<div class="bar"><div class="bar-inner">
+<span class="brand"><a class="mark" href="https://inema.club" rel="noopener" target="_blank">INEMA.CLUB</a><a class="pro" href="https://inema.pro" rel="noopener" target="_blank">PRO</a><a class="course" href="landing.html">GPT-6 Astra en la práctica</a></span>
+<a class="back" href="#trilha" style="display:none">← ruta</a>
+<button class="pill" id="pill" style="display:none">0 leído</button>
+<button id="revbtn">revisar <span id="revn">0</span></button>
+<button id="exbtn">ejercicios</button>
+<button id="jorbtn">recorrido</button>
+<button aria-label="Cómo funciona" id="helpbtn">?</button>
+<button aria-label="Preferencias de lectura" id="prefsbtn">Aa</button>
+<button id="themebtn">tema: oscuro</button>
+</div></div>
+<!-- ===== TRILHA ===== -->
+<section class="view" id="v-trilha">
+<header class="t-hero"><div class="wrap">
+<p class="kicker">Una sola ruta · 8 clases</p>
+<h1>GPT-6 Astra <em>en la práctica</em></h1>
+<p class="lead">Termina sabiendo encargar una tarea completa al nuevo asistente —en tu computadora, en tu navegador, con tus gustos— y revisar el resultado antes de darlo por terminado. Sin programar, sin descargar nada más de lo que ya usas.</p>
+</div></header>
+<section><div class="wrap">
+<div class="statcards"></div>
+<p class="eyebrow">Clases</p>
+<h2>De principio a fin</h2>
+<div class="aulas">
+<a class="au on" data-aula="1" href="#aula-1">
+<div class="num">1</div>
+<div><h3>De responder a hacer: qué cambió</h3><p>Termina con clara la diferencia entre pedir un texto y delegar una tarea clara, y con 3 tareas tuyas ya elegidas para delegar.</p><div class="prog"><i></i></div></div>
+<div class="meta">22 min · abrir →</div>
+</a>
+<a class="au on" data-aula="2" href="#aula-2">
+<div class="num">2</div>
+<div><h3>Conectar Astra con lo que ya usas</h3><p>Termina con GPT-6 Astra activo en la aplicación de ChatGPT de tu computadora y la conversación de trabajo fijada donde puedas encontrarla.</p><div class="prog"><i></i></div></div>
+<div class="meta">18 min · abrir →</div>
+</a>
+<a class="au on" data-aula="3" href="#aula-3">
+<div class="num">3</div>
+<div><h3>Pide el resultado, no el paso a paso</h3><p>Termina con tu primer pedido de tarea completa por escrito —resultado, lugar y prueba—, listo para pegar.</p><div class="prog"><i></i></div></div>
+<div class="meta">24 min · abrir →</div>
+</a>
+<a class="au on" data-aula="4" href="#aula-4">
+<div class="num">4</div>
+<div><h3>El asistente que usa el navegador por ti</h3><p>Termina con el uso del navegador activado, una tarea real preparada como borrador y el hábito de revisar antes de darla por terminada.</p><div class="prog"><i></i></div></div>
+<div class="meta">20 min · abrir →</div>
+</a>
+<a class="au on" data-aula="5" href="#aula-5">
+<div class="num">5</div>
+<div><h3>Iterar sin miedo: versiones y cómo volver atrás</h3><p>Termina sabiendo pedir una nueva versión, compararla con la anterior y restaurar la antigua cuando la nueva quedó peor.</p><div class="prog"><i></i></div></div>
+<div class="meta">22 min · abrir →</div>
+</a>
+<a class="au on" data-aula="6" href="#aula-6">
+<div class="num">6</div>
+<div><h3>Muéstrale tus gustos: la guía de estilo</h3><p>Termina con una guía de estilo de una página —2 ejemplos que admiras y 5 reglas tuyas—, lista para adjuntar a cada pedido.</p><div class="prog"><i></i></div></div>
+<div class="meta">24 min · abrir →</div>
+</a>
+<a class="au on" data-aula="7" href="#aula-7">
+<div class="num">7</div>
+<div><h3>La cuota de uso y el truco de orquestar</h3><p>Termina sabiendo leer el medidor de uso, prever cuándo se acaba y distinguir lo que requiere el modelo caro de lo que no.</p><div class="prog"><i></i></div></div>
+<div class="meta">24 min · abrir →</div>
+</a>
+<a class="au on" data-aula="8" href="#aula-8">
+<div class="num">8</div>
+<div><h3>Herramientas a la mano del asistente</h3><p>Termina reconociendo cuándo una tarea requiere una herramienta adicional —video, 3D, hoja de cálculo— y sabiendo pedirle a Astra que la use.</p><div class="prog"><i></i></div></div>
+<div class="meta">24 min · abrir →</div>
+</a>
+</div>
+</div></section>
+<footer><div class="wrap">GPT-6 Astra en la práctica · INEMA.CLUB PRO</div></footer>
+</section>
+<!-- ===== AULA 1 · FUNDAMENTO ===== -->
+<section class="view" data-aula="1" data-tempo="22min" id="v-aula-1">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 1</p>
+<h1>De responder<br/><em>por hacer</em></h1>
+<p class="promise">Al terminar esta clase, podrás explicar en una frase la diferencia entre pedir un texto y delegar una tarea, y señalar 3 tareas de tu trabajo que ya puedes encargarle a Astra esta semana.</p>
+<p class="why">Ya usas ChatGPT para escribir correos, resumir documentos y resolver dudas. Pero el trabajo de verdad sigue siendo tuyo: copiar el texto, abrir el programa adecuado, pegarlo, revisarlo y enviarlo. GPT-6 Astra cambia eso. No solo responde: ejecuta la tarea hasta el final en tu computadora. Quien entiende esta diferencia hoy empieza a delegar; quien no, sigue usando un asistente caro como si fuera un diccionario.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — um balcão de recepção com uma pilha de pedidos e um carimbo "feito" -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Un mostrador de recepción: de un lado, una pila de notas con pedidos; del otro, las mismas notas selladas como completadas." fill="none" role="img" viewbox="0 0 300 240">
+<rect height="60" opacity=".6" rx="8" stroke="var(--accent)" stroke-width="2" width="260" x="20" y="150"></rect>
+<rect fill="none" height="62" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="80" x="45" y="70"></rect>
+<rect fill="var(--panel)" height="62" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="80" x="52" y="62"></rect>
+<rect fill="var(--panel)" height="62" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="80" x="59" y="54"></rect>
+<path d="M70 72h56M70 86h40M70 100h48" stroke="var(--muted)" stroke-width="2"></path>
+<path d="M150 95h40" stroke="var(--accent)" stroke-width="2.5"></path>
+<path d="M182 87l10 8-10 8" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+<rect fill="var(--panel)" height="62" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="80" x="200" y="58"></rect>
+<path d="M211 76h56M211 90h40M211 104h48" stroke="var(--muted)" stroke-width="2"></path>
+<circle cx="255" cy="92" opacity=".9" r="20" stroke="var(--accent)" stroke-width="2.5"></circle>
+<path d="M245 92l7 7 13-14" fill="none" stroke="var(--accent)" stroke-width="3"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="11" text-anchor="middle" x="150" y="188">pedido → hecho</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="ferramenta" data-versao="GPT-6 Astra, lançado em set/2026">
+<h2><span class="n">01</span> Astra es un modelo nuevo, y «modelo» es el cerebro detrás del chat</h2>
+<p>Cuando abres ChatGPT, estás conversando con un <span class="gterm" data-def="O motor de inteligência que lê o seu pedido e produz a resposta. O ChatGPT é a janela; o modelo é quem pensa atrás dela. Modelos são trocados de tempos em tempos, e o nome muda junto." tabindex="0">modelo</span>. Piensa en la aplicación como el mostrador de atención y en el modelo como la persona detrás del mostrador. De vez en cuando, la empresa la reemplaza por alguien mejor preparado, y el mostrador sigue igual.</p>
+<p>GPT-6 Astra es el cambio más reciente. Lo que cambia para ti no es un número en una tabla: es la velocidad y la autonomía. Las tareas que antes requerían media hora de idas y vueltas ahora toman pocos minutos, y puede manejar programas y páginas por su cuenta. El resto de esta clase trata sobre qué hacer con eso.</p>
+<p>Para la contadora de una oficina pequeña, el mostrador sigue siendo el mismo ChatGPT que ya abre todas las mañanas. La diferencia es que ahora la persona detrás del mostrador acepta pedidos como "prepara y envía el recordatorio de vencimiento a los 12 clientes de esta lista", en vez de solo redactar el texto del recordatorio.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="fundamento">
+<h2><span class="n">02</span> Responder y hacer son pedidos distintos</h2>
+<p>Una solicitud de respuesta termina en el chat: recibes un texto y usarlo es tu trabajo. Una solicitud de tarea termina fuera del chat: el resultado aparece donde debía estar: el correo enviado, la página actualizada, la hoja de cálculo completada. La misma frase puede ser una cosa u otra, según cómo termines la solicitud.</p>
+<p>Compara los dos pedidos de la contadora. «Escribe un recordatorio sobre el vencimiento del impuesto de agosto» es una respuesta: ella todavía tendrá que copiarlo, abrir 12 correos y pegarlo. «Envía a cada cliente de esta lista un recordatorio del vencimiento del día 20, con su nombre y el importe de la boleta, y muéstrame la lista de los enviados» es una tarea: cuando termina, el trabajo está hecho y ella solo tiene que revisar la lista.</p>
+<p>La regla práctica: si tu pedido termina con «dime» o «escribe», es una respuesta. Si termina con «hazlo allí» y «muéstrame la prueba», es una tarea. Astra puede hacer ambas cosas; el cambio está en que empieces a pedir el segundo tipo.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> Lo que realmente hace hoy: modifica programas, navega y crea cosas</h2>
+<p>Tres capacidades explican la mayor parte de lo que puedes delegar. Usa el navegador como tú lo harías: abre páginas, hace clic, completa formularios y publica. Modifica archivos y programas de tu computadora: reorganiza una carpeta, ajusta un documento, cambia la apariencia de una página. Y crea cosas desde cero cuando se lo pides: un video corto de presentación, una tabla comparativa, una página sencilla.</p>
+<p>Una arquitecta independiente tenía una página de portafolio que llevaba dos años sin cambios. En vez de contratar a alguien, pidió: «deja esta página más actual y ordenada, manteniendo las fotos y los textos que ya tiene». En pocos minutos tenía una nueva versión para revisar: no era perfecta, pero estaba lista para que dijera qué cambiar. Lo importante no es la perfección, sino que la primera versión estuvo lista sin que tuviera que abrir un programa de edición.</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">La arquitecta pide un texto nuevo para la página, lo copia, abre el editor del sitio, lo pega, ajusta el espaciado y lo prueba en el celular. Una tarde entera, y el resultado todavía parece «pegado».</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Después</p><p class="qba-txt">Ella describe el resultado que quiere, adjunta una foto de la pantalla actual y deja que Astra modifique la página. En minutos tiene una versión para evaluar y solo decide qué ajustar.</p></div>
+<div class="qba-saldo">Saldo: de <b>una tarde</b> para <b>unos minutos</b> hasta la primera versión; y su tiempo empieza a destinarse a evaluar, no a ejecutar.</div>
+</div>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Lo que todavía hace mal — y por qué tú sigues al mando</h2>
+<p>La autonomía no significa infalibilidad. Hay dos tipos de errores frecuentes. El primero es cambiar un detalle: publica un aviso con el nombre antiguo del producto o usa la fecha equivocada, con la misma seguridad con la que acierta. El segundo es el gusto genérico: cuando pides algo «bonito» sin dar una referencia, entrega lo que parece una plantilla, sin nada tuyo.</p>
+<p>Ambos tienen el mismo remedio, y ese será tu papel de ahora en adelante: verificar lo que se hizo antes de darlo por terminado y dar suficiente contexto antes de pedirlo. La contadora que delega el envío de los 12 recordatorios no deja de revisar la lista final — cambia 40 minutos de escritura por 2 minutos de revisión. Ese es el nuevo trabajo: evaluar, no ejecutar.</p>
+<div class="quiz" data-answer="c">
+<p class="qk">Ponte a prueba</p><p class="q">Astra envió los recordatorios, pero un cliente recibió el monto de la guía de otro cliente. ¿Cuál es la interpretación correcta de este episodio?</p>
+<button class="opt" data-fb="Não é isso — o erro de detalhe é esperado e não anula o ganho. O que muda é o hábito de conferir antes de encerrar." data-k="a">El asistente no sirve para tareas con datos de clientes.</button>
+<button class="opt" data-fb="Pedir para ele mesmo conferir ajuda, mas a conferência final continua sendo sua — é o que garante que o erro não chegue ao cliente." data-k="b">Solo tienes que pedirle que la próxima vez lo compruebe por su cuenta.</button>
+<button class="opt" data-fb="Exatamente — ele executa, você julga. A prova (a lista do que foi enviado) existe justamente para você olhar antes de dar por pronto." data-k="c">El pedido debía terminar con una prueba para revisar, y revisarla es tu trabajo.</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- STEP 5 -->
+<section class="step" data-fig="5" data-kind="fundamento">
+<h2><span class="n">05</span> Tres tareas tuyas para delegar esta semana</h2>
+<p>El filtro para elegir qué delegar tiene dos preguntas. ¿La tarea es repetitiva o mecánica? ¿Ya sabes exactamente cómo se haría? ¿Y puedes revisar el resultado en pocos minutos, mirando un solo lugar? Si ambas respuestas son sí, es una buena primera tarea. Si el resultado requiere tu criterio profesional en cada línea, todavía no es el momento.</p>
+<p>Para la arquitecta, tres opciones: actualizar la página del portafolio con los dos proyectos nuevos; armar una tabla comparando tres proveedores de pisos a partir de los presupuestos en PDF; escribir y enviar el correo de seguimiento de obra a los clientes del semestre. Para la contadora: enviar los recordatorios de vencimiento del mes; organizar por mes la carpeta de comprobantes de un cliente; armar en una tabla el resumen de pendientes de cada cliente.</p>
+<p class="qanchor">No vas a aprender a hacer el trabajo de Astra. Vas a aprender a dar buenas instrucciones y a revisar rápido: eso es lo que empieza a valer tu tiempo.</p>
+<div class="mobfig" data-mobfig="5"></div>
+<button class="readbtn" data-read="s5">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="tarefa" data-practice="p1">
+<p class="pk">Practica ahora <span class="pcount">0/3 completado</span></p>
+<h3 class="ph">Elige tus 3 primeras tareas para delegar</h3>
+<p class="pgoal">Meta: terminar con 3 tareas de tu trabajo escritas en el formato "haz esto allí + muéstrame la prueba". ~10 min, en un papel o en cualquier documento.</p>
+<p class="psafe">En esta práctica solo escribes: todavía no le pides nada a Astra. No se envía, publica ni modifica nada. Si una tarea parece demasiado grande, solo tienes que cambiarla por otra más pequeña.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Anota 6 tareas que repites cada semana y que ya sabes exactamente cómo hacer. Terminas cuando estén escritas las 6, aunque parezcan pequeñas.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Pasa cada una por este filtro: ¿es mecánica? ¿se puede verificar en un solo lugar en pocos minutos? Tacha las que no cumplan cualquiera de las dos condiciones. Está listo cuando queden al menos 3.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Reescribe las 3 que quedaron en formato de tarea: qué hacer, dónde y qué prueba quieres ver al final. Ejemplo aceptable: «Organiza los comprobantes de la carpeta del cliente Silva en subcarpetas por mes y muéstrame la lista de archivos de cada mes». Está listo cuando cada una termine con una prueba específica.</label></li>
+</ol>
+<p class="pdone">Acabas de elegir las 3 primeras tareas que dejarán de estar en tus manos, en el formato que Astra entiende y que puedes revisar.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o aplicativo é o balcão; o modelo é quem pensa atrás dele — o balcão não muda quando o modelo é trocado" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="120" rx="10" stroke="var(--line2)" stroke-width="2" width="180" x="20" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="52">APLICACIÓN (el mostrador)</text>
+<rect fill="var(--accent)" height="56" opacity=".22" rx="8" stroke="var(--accent)" stroke-width="2" width="110" x="55" y="70"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="94">MODELO</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="112">GPT-6 Astra</text>
+<path d="M110 165v-12" stroke="var(--warm)" stroke-width="2"></path>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="185">cambiado en sept/2026</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; um pedido de resposta termina no chat; um pedido de tarefa termina no lugar onde o resultado precisava estar" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="50" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="80" x="20" y="20"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="49">"escribe"</text>
+<path d="M60 70v30" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="40" rx="8" stroke="var(--line2)" stroke-dasharray="4 3" stroke-width="2" width="80" x="20" y="100"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="124">texto en el chat</text>
+<rect height="50" rx="8" stroke="var(--accent)" stroke-width="2" width="80" x="120" y="20"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="49">"hazlo allí"</text>
+<path d="M160 70v30" stroke="var(--accent)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="40" opacity=".2" rx="8" width="80" x="120" y="100"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="124">hecho en su lugar</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="170">+ evidencia</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; as 3 capacidades que explicam quase tudo o que dá para delegar: navegar, mexer em programas, montar do zero" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<circle cx="110" cy="100" fill="var(--accent)" opacity=".25" r="26" stroke="var(--accent)" stroke-width="2"></circle>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="104">Astra</text>
+<path d="M110 74V40M87 113L45 140M133 113l42 27" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="26" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="80" x="70" y="14"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="31">navega</text>
+<rect height="26" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="80" x="8" y="140"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="48" y="157">modifica programas</text>
+<rect height="26" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="80" x="132" y="140"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="172" y="157">arma desde cero</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o ciclo que fica com você: dar contexto antes, conferir depois — a execução é dele" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="40" rx="8" stroke="var(--accent)" stroke-width="2" width="60" x="15" y="80"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="45" y="104">contexto</text>
+<path d="M75 100h30" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="40" opacity=".2" rx="8" width="60" x="80" y="80"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="104">ejecuta</text>
+<path d="M140 100h30" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="40" rx="8" stroke="var(--accent)" stroke-width="2" width="60" x="145" y="80"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="175" y="104">revisa</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="45" y="145">tú</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="145">Astra</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="175" y="145">tú</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o filtro de duas perguntas — só delega o que passa nas duas" data-fig="5"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="40" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="180" x="20" y="20"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="44">es mecánica, ¿ya sabes cómo hacerlo?</text>
+<path d="M110 60v20" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="40" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="180" x="20" y="80"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="104">¿revisas todo en un solo lugar, en minutos?</text>
+<path d="M110 120v20" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="40" opacity=".22" rx="8" stroke="var(--accent)" stroke-width="2" width="110" x="55" y="140"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="164">delega</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Resalta cualquier fragmento para convertirlo en una tarjeta de repaso.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>GPT-6 Astra es el nuevo modelo detrás del mismo ChatGPT: el mostrador no cambió; cambió quién te atiende. La diferencia práctica está en la velocidad y la autonomía.</li>
+<li>Pedir un texto termina en el chat; delegar una tarea termina donde debía estar el resultado, con una prueba para que la revises.</li>
+<li>Se equivoca en detalles con seguridad y entrega un gusto genérico, sin referencias. Por eso tu trabajo consiste en darle contexto antes y revisar después.</li>
+<li>Delega primero lo mecánico, que puedes comprobar en minutos. El criterio profesional sigue siendo tuyo.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr distinguir una respuesta de una tarea y elegir las 3 primeras cosas que dejarás de hacer tú.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: toma la más pequeña de las 3 tareas que escribiste y anota a su lado dónde revisarías si quedó bien: el correo enviado, la carpeta, la página.</p>
+<p class="na-hook">En la próxima clase, conectas Astra en la aplicación de ChatGPT de tu computadora y descubres por qué tanta gente cree que "no recibió" el nuevo modelo cuando ya está ahí.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#trilha">← ruta</a><a href="#aula-2">siguiente: conectando Astra →</a></nav>
+<footer>Clase 1 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-1" type="application/json">
+[
+  {"front":"A contadora pede: 'escreva um aviso de prazo para os clientes'. O que ela ainda vai ter que fazer sozinha depois da resposta, e como reescrever o pedido para não ter que fazer?","back":"Copiar, abrir cada e-mail, colar e enviar. Reescrever como tarefa: 'envie a cada cliente da lista o aviso com o nome e o valor dele, e me mostre a lista dos enviados'."},
+  {"front":"O que diferencia, na prática, um pedido de resposta de um pedido de tarefa?","back":"Onde ele termina: a resposta termina no chat (você ainda usa o texto); a tarefa termina no lugar do resultado (e-mail enviado, página alterada), com uma prova para conferir."},
+  {"front":"A arquiteta recebeu a página de portfólio 'atualizada', mas um projeto ficou com o nome do cliente errado. Qual era a parte do processo que faltou?","back":"A conferência final — ela é o trabalho que fica com quem delega. O erro de detalhe é esperado; o que não pode faltar é olhar a prova antes de dar por pronto."},
+  {"front":"Você tem uma tarefa que exige o seu julgamento profissional em cada linha (ex.: decidir o parecer de cada cliente). Delega ou não? Por quê?","back":"Ainda não — o filtro pede tarefa mecânica e conferível em minutos. Delegue a parte mecânica em volta (organizar, montar a tabela) e mantenha o julgamento com você."},
+  {"front":"Por que trocar o modelo não muda o aplicativo que você abre todo dia?","back":"Porque o aplicativo é o balcão e o modelo é quem atende atrás dele. A empresa troca o atendente por um mais preparado; a janela que você usa continua a mesma."}
+]
+</script>
+<!-- COMPLETUDE aula-1 | tipo=FUNDAMENTO | steps=5
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (5/5: contadora s1, contadora s2, arquiteta s3, contadora s4, arquiteta+contadora s5)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (5/5)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~10 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-1"> presente (5 cartões: aplicação, contraste, diagnóstico, decisão, pergunta)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 5/5 pergunta-decisão-contraste-diagnóstico-aplicação / operação: recap afirma, cartões exigem aplicar ou recuperar
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 4)
+  pool: quiz + cartões + qbefore-after (s3) + qanchor (s5) = 4 (teto 5) · densidade: quadros em s3 e s5, não adjacentes
+-->
+</section>
+<!-- ===== AULA 2 · FERRAMENTA ===== -->
+<section class="view" data-aula="2" data-tempo="18min" id="v-aula-2">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 2</p>
+<h1>Conectar Astra<br/><em>en lo que ya usas</em></h1>
+<p class="promise">Al terminar esta clase, podrás abrir ChatGPT en tu computadora, confirmar con el propio asistente que GPT-6 Astra está activo y dejar fijada tu conversación de trabajo donde puedas encontrarla mañana.</p>
+<p class="why">Mucha gente creyó que "no recibió" el nuevo modelo. Estaba ahí, detrás de una actualización pendiente o escondido en un modo de la aplicación que nunca había abierto. Perder días usando el modelo anterior sin saberlo es el desperdicio más común de esta semana. El segundo más común es empezar una buena tarea y no volver a encontrar la conversación al día siguiente.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — um quadro de avisos com um papel fixado por um alfinete, e outros papéis soltos no chão -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Un tablero de corcho con una hoja bien sujeta arriba con una chincheta y dos hojas caídas en el suelo." fill="none" role="img" viewbox="0 0 300 240">
+<rect height="160" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="240" x="30" y="20"></rect>
+<rect fill="var(--warm)" height="160" opacity=".06" rx="8" width="240" x="30" y="20"></rect>
+<rect fill="var(--panel)" height="70" rx="3" stroke="var(--accent)" stroke-width="2" width="90" x="60" y="45"></rect>
+<circle cx="105" cy="44" fill="var(--accent)" r="5"></circle>
+<path d="M72 66h66M72 80h50M72 94h60" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--panel)" height="26" rx="3" stroke="var(--line2)" stroke-width="2" transform="rotate(-8 210 213)" width="70" x="175" y="200"></rect>
+<rect fill="var(--panel)" height="26" rx="3" stroke="var(--line2)" stroke-width="2" transform="rotate(6 125 219)" width="70" x="90" y="206"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="105" y="140">fijado</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="ferramenta" data-versao="Aplicativo ChatGPT para computador, set/2026">
+<h2><span class="n">01</span> Está en la aplicación de la computadora, no solo en el sitio web</h2>
+<p>Astra funciona mejor en <b>aplicación de ChatGPT en la computadora</b> — el que descargas una vez y queda en tu Mac o Windows, con su propio ícono. Ahí es donde el asistente puede interactuar con tus programas y archivos. El sitio en el navegador sirve para conversar, pero no para delegar tareas que ocurren fuera del chat.</p>
+<p>Si ya tienes la aplicación, el primer paso es actualizarla. Abre el menú de la aplicación, busca «Buscar actualizaciones», acepta y deja que se vuelva a abrir sola. El nuevo modelo llega junto con esa reapertura. Si todavía no tienes la aplicación, descárgala desde el sitio oficial de ChatGPT, en la sección de aplicaciones: toma unos 3 minutos.</p>
+<p>La contadora usaba ChatGPT solo desde el navegador, desde hacía un año. Cuando oyó hablar de Astra, buscó en el sitio y no encontró nada diferente. El modelo estaba disponible en su cuenta desde el día del lanzamiento; solo faltaba actualizar la aplicación de escritorio. Esa fue la diferencia entre «no lo recibí» y «estuvo aquí todo el tiempo».</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="Planos Plus e Pro; modo de trabalho do aplicativo, set/2026">
+<h2><span class="n">02</span> Si no aparece, hay dos lugares que revisar</h2>
+<p>El primer lugar es tu plan. Astra está en los planes pagos — Plus y Pro. En la cuenta gratuita no aparece, por más que actualices. El segundo lugar es el <b>modo</b> de la aplicación: el chat común, donde conversas, y el modo de trabajo, donde el asistente ejecuta tareas. En algunos momentos, el modelo nuevo aparece primero en el modo de trabajo y solo después en el chat común.</p>
+<p>Esto parece complicado, pero funciona como dos ventanillas de una misma agencia: la ventanilla de atención rápida y la de servicios. Puede que la persona nueva haya empezado por la ventanilla de servicios. Solo necesitas saber que existen las dos y mirar en la otra cuando no encuentres algo en la primera.</p>
+<div class="qsteps">
+<p class="qsk">El proceso, en cuatro pasos</p>
+<ol>
+<li>Abre la aplicación de ChatGPT en la computadora y confirma en tu perfil que tu plan es <b>Plus</b> o <b>Pro</b>.</li>
+<li>Actualiza desde el menú («Buscar actualizaciones») y deja que la aplicación se vuelva a abrir.</li>
+<li>Abre el <span class="gterm" data-def="O pequeno menu no alto da conversa que mostra o nome do modelo em uso e deixa você trocar por outro. Cada conversa nova pode voltar ao modelo padrão." tabindex="0">selector de modelo</span> en la parte superior de la conversación y busca "GPT-6 Astra".</li>
+<li>¿No la encontraste? Cambia a <b>modo de trabajo</b> de la aplicación y abre el mismo selector allí.</li>
+</ol>
+</div>
+<p>La arquitecta siguió los cuatro pasos y encontró Astra recién en el cuarto. Tenía el plan adecuado y la aplicación actualizada; simplemente, el modelo estaba en otro mostrador. Diez segundos después de cambiar el modo, ahí estaba.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="ferramenta" data-versao="Aplicativo ChatGPT, painel lateral de conversas, set/2026">
+<h2><span class="n">03</span> Fija la conversación de trabajo, o desaparecerá entre las demás</h2>
+<p>Cuando delegas tareas, cada una se convierte en una conversación, y las conversaciones se acumulan rápido. La aplicación las muestra todas en la columna de la izquierda, de la más reciente a la más antigua. Después de una mañana de trabajo, la conversación importante puede estar en el décimo lugar, con un título que no reconoces. No desapareció; solo quedó difícil de encontrar.</p>
+<p>El hábito que lo resuelve es <b>fijar</b>: pasa el cursor sobre la conversación, haz clic en el menú de tres puntos y elige «Fijar». Irá a la parte superior de la lista y se quedará ahí hasta que la desfijes. Fija como máximo tres o cuatro; fijar solo ayuda si lo haces pocas veces. Para las demás, ponles un nombre que reconozcas desde el mismo menú («Cambiar nombre»).</p>
+<p>La contadora creó una conversación para cada cliente grande y fijó las tres que usa todas las semanas: «Silva — pendientes», «Padaria Real — plazos» y «Clínica — comprobantes». Cuando abre la aplicación, las tres están arriba. Encuentra las demás con la búsqueda, escribiendo el nombre del cliente.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Pregúntale directamente: "¿qué modelo eres?"</h2>
+<p>La forma más segura de confirmar es la más sencilla. En una conversación nueva, escribe «¿Qué modelo eres?» y lee la respuesta. Si dice GPT-6 Astra, está activo. Si dice otro nombre, todavía estás en el modelo anterior: vuelve a los cuatro pasos. Hazlo una vez cada vez que cambies de modo o después de cualquier actualización.</p>
+<p>La arquitecta pasó una semana entera pidiendo tareas, decepcionada por la lentitud y los resultados. Solo al final preguntó. La respuesta llegó con el nombre del modelo anterior: el selector había vuelto a la opción predeterminada en una actualización y ella no se dio cuenta. Una pregunta de cinco palabras le habría ahorrado la semana.</p>
+<div class="qerr">
+<p class="qk">Error común</p>
+<p class="qerr-txt"><b>Creer que estás usando Astra porque actualizaste la aplicación.</b> Actualizar trae el modelo, pero no garantiza que quede seleccionado: el selector puede volver al modelo predeterminado en una conversación nueva o después de una actualización. Para evitarlo: pregunta «¿qué modelo eres?» al inicio de cada sesión de trabajo y mira el nombre en el selector antes de pedir algo que lleve mucho tiempo.</p>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="tarefa" data-practice="p2">
+<p class="pk">Practica ahora <span class="pcount">0/4 completado</span></p>
+<h3 class="ph">Conecta Astra y fija tu conversación de trabajo</h3>
+<p class="pgoal">Meta: terminar con Astra confirmado por el propio asistente y una conversación con nombre, fijada en la parte superior de la lista. ~8 min, en tu computadora.</p>
+<p class="psafe">Actualizar la aplicación y fijar conversaciones no borra nada: tus conversaciones antiguas siguen en su lugar. Si el modelo no aparece, no perdiste nada: solo depende del plan o del modo, y los cuatro pasos del paso 02 lo resuelven.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Abre la aplicación de ChatGPT en la computadora y actualízala desde el menú. Queda listo cuando la aplicación se vuelva a abrir sola.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Abre una conversación nueva, elige «GPT-6 Astra» en el selector de modelo (en el chat común o en el modo de trabajo) y escribe: «¿Qué modelo eres?». Queda listo cuando la respuesta diga GPT-6 Astra.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Cambia el nombre de esta conversación por el de la primera tarea que elegiste en la clase 1 (ej.: «Recordatorios de plazos — septiembre»). Está listo cuando aparezca el nuevo nombre en la lista de la izquierda.</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Fija la conversación desde el menú de tres puntos. Está listo cuando aparezca en la parte superior de la lista, por encima de las demás.</label></li>
+</ol>
+<p class="pdone">Acabas de dejar Astra abierto y confirmado, con tu primera conversación de trabajo en el lugar donde la encontrarás mañana.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o site só conversa; o aplicativo do computador é onde o assistente alcança seus programas e arquivos" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="60" rx="8" stroke="var(--line2)" stroke-width="2" width="85" x="15" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="57" y="55">sitio web</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="57" y="72">solo conversación</text>
+<rect fill="var(--accent)" height="60" opacity=".2" rx="8" stroke="var(--accent)" stroke-width="2" width="85" x="120" y="30"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="162" y="55">aplicación</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="162" y="72">ejecuta</text>
+<path d="M162 90v25M140 140h44" stroke="var(--accent)" stroke-width="2"></path>
+<rect height="24" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="30" x="112" y="115"></rect>
+<rect height="24" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="30" x="147" y="115"></rect>
+<rect height="24" rx="4" stroke="var(--ink-soft)" stroke-width="2" width="30" x="182" y="115"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="162" y="165">programas · archivos · navegador</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; dois lugares para olhar quando o modelo não aparece: o plano da conta e o modo do aplicativo" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="44" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="180" x="20" y="20"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="46">1 · plan: ¿Plus o Pro?</text>
+<path d="M110 64v22" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="44" rx="8" stroke="var(--line2)" stroke-width="2" width="85" x="20" y="86"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="62" y="112">chat común</text>
+<rect fill="var(--accent)" height="44" opacity=".2" rx="8" stroke="var(--accent)" stroke-width="2" width="85" x="115" y="86"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="157" y="112">modo de trabajo</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="160">2 · el mismo selector en ambos modos</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; conversas fixadas ficam no topo da lista; as outras descem conforme novas aparecem" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="160" rx="8" stroke="var(--line2)" stroke-width="2" width="160" x="30" y="20"></rect>
+<rect fill="var(--accent)" height="22" opacity=".25" rx="4" stroke="var(--accent)" stroke-width="1.5" width="140" x="40" y="30"></rect>
+<rect fill="var(--accent)" height="22" opacity=".25" rx="4" stroke="var(--accent)" stroke-width="1.5" width="140" x="40" y="56"></rect>
+<circle cx="170" cy="41" fill="var(--accent)" r="3"></circle><circle cx="170" cy="67" fill="var(--accent)" r="3"></circle>
+<rect height="18" rx="4" stroke="var(--line2)" stroke-width="1.5" width="140" x="40" y="90"></rect>
+<rect height="18" rx="4" stroke="var(--line2)" stroke-width="1.5" width="140" x="40" y="114"></rect>
+<rect height="18" rx="4" stroke="var(--line2)" stroke-width="1.5" width="140" x="40" y="138"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="172">↓ bajan con el tiempo</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a checagem de cinco palavras — o nome na resposta é a única prova que vale" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="36" rx="18" stroke="var(--ink-soft)" stroke-width="2" width="180" x="20" y="40"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="63">"¿Qué modelo eres?"</text>
+<path d="M110 76v24" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="36" opacity=".22" rx="8" stroke="var(--accent)" stroke-width="2" width="150" x="35" y="100"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="123">"Soy GPT-6 Astra."</text>
+<path d="M60 165l8 8 14-16" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="130" y="171">¿otro nombre? vuelve a los 4 pasos</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Las pantallas descritas son las de set/2026; si el menú cambia de nombre, el recorrido lógico sigue siendo el mismo.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>Astra está en la aplicación de ChatGPT para computadora, actualizada: el sitio web solo conversa; la aplicación ejecuta.</li>
+<li>Cuando no aparece, el motivo está en uno de estos dos lugares: el plan de la cuenta (debe ser Plus o Pro) o el modo de la aplicación (chat común o modo de trabajo).</li>
+<li>Fijar pocas conversaciones y ponerles nombre a las demás evita que pierdas el trabajo de la mañana entre la lista.</li>
+<li>La única prueba de que está activo es que el propio asistente diga su nombre; pregúntaselo al inicio de cada sesión.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr dejar Astra abierto y confirmado, con tu conversación de trabajo en el lugar correcto.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: crea y ponle nombre a una conversación para cada una de las otras 2 tareas de la clase 1, sin pedir nada todavía; solo para que mañana ya estén esperándote.</p>
+<p class="na-hook">En la próxima clase, escribes tu primera solicitud de una tarea completa y descubres por qué la que parece más detallada suele dar más trabajo.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-1">← lección 1</a><a href="#aula-3">siguiente: el pedido completo →</a></nav>
+<footer>Clase 2 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-2" type="application/json">
+[
+  {"front":"A contadora atualizou o aplicativo, abriu o chat comum e o Astra não está no seletor. Quais são os dois lugares que ela olha, e em que ordem?","back":"Primeiro confere se a assinatura dela é Plus ou Pro. Depois troca para o modo de trabalho e abre o mesmo seletor lá — é onde o modelo costuma aparecer primeiro."},
+  {"front":"Qual a diferença entre usar o ChatGPT pelo site e pelo aplicativo do computador, para quem quer delegar tarefas?","back":"Pelo site você recebe respostas e o trabalho continua seu. Pelo aplicativo do computador o assistente alcança programas, arquivos e o navegador — a tarefa termina fora do chat."},
+  {"front":"A arquiteta ficou uma semana com resultados lentos e fracos. Que pergunta de cinco palavras teria mostrado o problema no primeiro dia?","back":"'Que modelo você é?' — a resposta traria o nome do modelo antigo, mostrando que o seletor tinha voltado ao padrão."},
+  {"front":"Você tem 15 conversas de trabalho. Fixa todas para não perder nenhuma?","back":"Não — fixação só ajuda se for rara (3 ou 4). Fixe as que usa toda semana e renomeie as outras com o nome do cliente ou da tarefa, para achar pela busca."}
+]
+</script>
+<!-- COMPLETUDE aula-2 | tipo=FERRAMENTA | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: contadora s1, arquiteta s2, contadora s3, arquiteta s4)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~8 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-2"> presente (4 cartões: aplicação, contraste, diagnóstico, decisão)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 4/4 / operação: recap afirma, cartões aplicam a cenário novo
+  [N/A] teste-se-FUND     aula é FERRAMENTA (obrigação não se aplica); sem teste-se opcional
+  pool: qerr (s4) + qsteps (s2) + cartões = 3 (teto 5) · densidade: quadros em s2 e s4, não adjacentes · data-versao em 3 steps-ferramenta
+-->
+</section>
+<!-- ===== AULA 3 · FUNDAMENTO ===== -->
+<section class="view" data-aula="3" data-tempo="24min" id="v-aula-3">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 3</p>
+<h1>Pide el resultado,<br/><em>no el paso a paso</em></h1>
+<p class="promise">Al terminar esta clase, podrás escribir un pedido para una tarea completa —resultado, lugar y prueba— que Astra ejecute sin que tengas que explicar cada clic, y pegar tu primer pedido real.</p>
+<p class="why">El pedido que parece más detallado suele ser el que más trabajo da: una lista de 14 clics que tú misma habrías hecho en 10 minutos. Astra no necesita el camino: necesita el destino. Quien aprende a describir el resultado y no el procedimiento resuelve con un solo pedido lo que antes llevaba media hora de idas y vueltas. Es la habilidad central de este curso; todo lo que viene después depende de ella.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — um bilhete de encomenda de marcenaria: desenho da estante pronta, medidas e a nota "me avise quando estiver montada" -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Una nota de encargo: el dibujo de una estantería terminada con medidas y una anotación que pide que avisen cuando esté armada." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="200" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="220" x="40" y="20"></rect>
+<rect height="100" stroke="var(--accent)" stroke-width="2.5" width="90" x="70" y="50"></rect>
+<path d="M70 83h90M70 116h90M115 50v100" opacity=".7" stroke="var(--accent)" stroke-width="2"></path>
+<path d="M175 50v100" stroke="var(--muted)" stroke-width="1.5"></path>
+<path d="M170 50h10M170 150h10" stroke="var(--muted)" stroke-width="1.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" x="190" y="104">180 cm</text>
+<path d="M70 165v10M160 165v10M70 170h90" stroke="var(--muted)" stroke-width="1.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="115" y="190">90 cm</text>
+<text fill="var(--ink-soft)" font-family="var(--serif)" font-size="12" font-style="italic" text-anchor="middle" x="150" y="212">"avísame cuando esté lista"</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> Un buen pedido describe el destino, no el camino</h2>
+<p>Cuando encargas una estantería al carpintero, no le explicas cómo sostener la sierra. Le dices qué quieres que quede listo, dónde va a estar y cómo sabrás que quedó bien. Con Astra pasa lo mismo. Describir cada clic es tratar al asistente como una mano que necesita que la guíen; describir el resultado es tratarlo como alguien que sabe trabajar y necesita saber qué debe entregar.</p>
+<p>Hay una ventaja oculta en esto: cuando describes el destino, elige el camino más corto, que muchas veces no conocías. Puede hacer en una sola pantalla un cambio que exigiría abrir tres. Si le indicas las tres pantallas, obedecerá y perderá tiempo.</p>
+<p>La contadora quería cambiar el texto del pie de página en 40 informes mensuales. Empezó a escribir «abre el primer archivo, ve al final de la página, selecciona el texto...» y se detuvo en la tercera línea. Lo cambió por: «En todos los informes de la carpeta Septiembre, reemplaza el pie de página anterior por este texto, sin cambiar nada más, y muéstrame la lista de los archivos modificados». Un pedido, 40 archivos.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="fundamento">
+<h2><span class="n">02</span> Las tres partes de un pedido que se puede delegar: resultado, lugar y prueba</h2>
+<p>Una solicitud delegable tiene tres partes, siempre en el mismo orden. El <b>resultado</b>: lo que debe existir cuando termine, descrito como se lo describirías a un colega. El <b>lugar</b>: dónde sucede esto: qué carpeta, qué página, qué conversación, qué aplicación. La <b>prueba</b>: lo que quieres ver al final para comprobarlo en un minuto: una lista, una captura de pantalla, el enlace.</p>
+<p>Si falta el resultado, pregunta o inventa. Si falta el lugar, lo hace en el lugar equivocado con la misma seguridad. Si falta la prueba, tienes que salir a buscar lo que hizo. Las tres partes juntas convierten «hizo algo» en «hizo esto, aquí, y lo vi».</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">"Mejora mi página de portafolio." La arquitecta recibe una página modificada en partes que no pidió, no sabe qué cambió y pasa 20 minutos comparando.</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Después</p><p class="qba-txt">"En la página de portafolio (archivo adjunto), agrega los dos proyectos de esta carpeta, cada uno con una foto y tres líneas, manteniendo el estilo actual, y muéstrame la página lista junto con la lista de lo que cambió."</p></div>
+<div class="qba-saldo">Saldo: de <b>20 minutos</b> buscando qué cambió para <b>1 minuto</b> revisando una lista, sin cambiar nada fuera de lo pedido.</div>
+</div>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> El contexto que le falta: adjunta la pantalla, el archivo, el ejemplo</h2>
+<p>Astra no ve lo que tú ves, a menos que se lo muestres. No sabe cuál es «la página», cuál es «ese informe» ni cómo es «la forma que me gusta». Tres archivos adjuntos resuelven casi todo: una <b>captura de pantalla</b> (la captura de pantalla de lo que estás viendo), el <b>archivo</b> en cuestión, y un <b>ejemplo</b> de resultado que consideras bueno.</p>
+<p>La captura de pantalla es el adjunto más subestimado. Le muestra al asistente exactamente lo que tienes delante —la página abierta, la tabla, el mensaje— sin que tengas que describirlo. En Windows, usa la tecla de imprimir pantalla; en Mac, la combinación de comando, shift y 4. La imagen queda copiada y la pegas en la conversación.</p>
+<p>La arquitecta adjuntó una captura de la página actual y un ejemplo del portafolio de una colega a quien admira, y escribió: «Dale este estilo al mío, manteniendo mis textos». El resultado tuvo el tono adecuado en el primer intento. Sin el ejemplo, la misma frase habría producido la página genérica de siempre, tema de la clase 6.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Una solicitud, una tarea: cómo dividir lo que es grande</h2>
+<p>Los pedidos demasiado grandes fallan de forma predecible: hace la mitad que entendió y deja la otra a medias, o hace todo y tú no puedes verificarlo. El criterio es la prueba. Si no puedes nombrar una única prueba que puedas verificar en un minuto, el pedido es demasiado grande — divídelo en dos, cada uno con su prueba.</p>
+<p>La contadora quería «cerrar el mes del cliente Silva». Eso es una mañana de trabajo, no un pedido. Lo dividió en tres: organizar los comprobantes por mes (prueba: la lista de carpetas), armar la tabla de pendientes (prueba: la tabla), escribir el correo con los pendientes (prueba: el borrador, sin enviar). Tres pedidos, tres revisiones de un minuto y el mes cerrado antes del almuerzo.</p>
+<div class="quiz" data-answer="b">
+<p class="qk">Ponte a prueba</p><p class="q">La arquitecta escribe: «Actualiza mi portafolio, envía un correo electrónico a los clientes del semestre para avisarles y organiza la carpeta de fotos». ¿Qué está mal en este pedido?</p>
+<button class="opt" data-fb="Não é falta de detalhe — é excesso de tarefas num pedido só. Cada uma dessas três precisa da sua própria prova." data-k="a">Falta detallar el paso a paso de cada parte.</button>
+<button class="opt" data-fb="Exatamente — são três resultados, três lugares e três provas diferentes. Quebrando em três pedidos, cada um é conferível em um minuto." data-k="b">Son tres tareas con tres pruebas diferentes en un solo pedido.</button>
+<button class="opt" data-fb="O assistente dá conta de cada uma delas — o problema é misturar as três, porque aí nenhuma fica conferível." data-k="c">El asistente no puede hacer ninguna de las tres cosas.</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- STEP 5 -->
+<section class="step" data-fig="5" data-kind="fundamento">
+<h2><span class="n">05</span> Cuando te pide permiso o se detiene a mitad del proceso, dile «continúa»</h2>
+<p>En tareas que modifican programas o páginas, Astra a veces se detiene y pregunta si puede continuar: abrir una aplicación, entrar en una cuenta, borrar algo. Es una protección, no un defecto. Lee lo que te pide; si tiene sentido, responde «puedes» o «continúa». En otros momentos reinicia una etapa y parece haberse trabado: vuelve a la misma conversación y escribe «continúa desde donde te quedaste».</p>
+<p>El error es abrir una conversación nueva y repetir el pedido. Entonces empieza de cero, sin lo que ya había hecho, y te quedas con dos mitades. La conversación fijada de la clase 2 existe precisamente para eso: ahí está el trabajo, y ahí funciona el «continúa».</p>
+<p>A la contadora le sorprendió la primera vez que el asistente se detuvo para preguntarle si podía abrir el programa de correo electrónico. Respondió «puedes, pero solo borradores, sin enviar». El asistente siguió con esa condición. La solicitud de permiso se convirtió en el momento de poner un límite, y eso significa más control, no menos.</p>
+<p class="qanchor">Describe qué debe existir al final, di dónde y pide una prueba. El camino lo decide el asistente; el veredicto es tuyo.</p>
+<div class="mobfig" data-mobfig="5"></div>
+<button class="readbtn" data-read="s5">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="prompt" data-practice="p3">
+<p class="pk">Practica ahora <span class="pcount">0/3 completado</span></p>
+<h3 class="ph">Escribe y pega tu primer pedido para una tarea completa</h3>
+<p class="pgoal">Meta: una solicitud con resultado, lugar y prueba, pegada en la conversación fijada de la clase 2, y la prueba revisada. ~12 min.</p>
+<p class="psafe">El modelo de abajo termina con «sin enviar ni publicar nada»: Astra prepara y muestra, tú decides después. Si el resultado es distinto de lo esperado, no salió nada de tu computadora: vuelve a pedirlo ajustando lo que faltó.</p>
+<div class="pcodewrap"><button class="pcopy" type="button">copiar</button><pre class="pcode">Tarefa: &lt;o que deve existir quando você terminar, em 1 ou 2 frases&gt;
+Onde: &lt;a pasta, a página ou o aplicativo — arquivo ou captura de tela em anexo&gt;
+Mantenha: &lt;o que não pode mudar&gt;
+Prova: quando terminar, me mostre &lt;a lista / a captura de tela / o rascunho&gt;.
+Não envie nem publique nada — só prepare e me mostre.</pre></div>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Completa el modelo con la más pequeña de las 3 tareas de la lección 1. Está listo cuando cada línea tenga tu contenido y no quede ningún "&lt; &gt;".</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Adjunta el archivo o la captura de pantalla del lugar, pega el pedido en la conversación fijada y envíalo. Si te pide permiso, léelo y responde «puedes». Queda listo cuando diga que terminó.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Mira solo la prueba que pediste y respóndete: ¿quedó como lo describí? Deberías ver algo como una lista de archivos modificados o un borrador con tu texto. Está listo cuando hayas dicho "sí" o anotado lo que faltó.</label></li>
+</ol>
+<p class="pdone">Acabas de delegar tu primera tarea completa, con una instrucción que cabe en cinco líneas y una revisión que toma un minuto.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; ditar o caminho trava o assistente no seu roteiro; descrever o destino deixa ele achar o atalho" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<circle cx="30" cy="100" fill="var(--ink-soft)" r="8"></circle>
+<circle cx="190" cy="100" fill="var(--accent)" opacity=".3" r="10" stroke="var(--accent)" stroke-width="2"></circle>
+<path d="M38 100l20-40 25 60 25-50 25 45 25-35 20 20" fill="none" stroke="var(--line2)" stroke-dasharray="4 3" stroke-width="2"></path>
+<path d="M38 100h142" stroke="var(--accent)" stroke-width="2.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="45">el camino que indicaste</text>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="128">el atajo que encuentra</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="190" y="140">destino</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; as três partes, sempre nesta ordem: resultado, lugar, prova — tire uma e o pedido vaza" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="40" opacity=".22" rx="8" stroke="var(--accent)" stroke-width="2" width="180" x="20" y="24"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="49">RESULTADO · lo que existe al final</text>
+<rect fill="var(--accent)" height="40" opacity=".16" rx="8" stroke="var(--accent)" stroke-width="2" width="180" x="20" y="80"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="105">LUGAR · dónde sucede</text>
+<rect fill="var(--accent)" height="40" opacity=".1" rx="8" stroke="var(--accent)" stroke-width="2" width="180" x="20" y="136"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="110" y="161">PRUEBA · lo que verificas</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; três anexos que dão ao assistente o que ele não vê: a tela, o arquivo e o exemplo" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="70" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="54" x="18" y="50"></rect>
+<rect fill="var(--accent)" height="28" opacity=".3" rx="2" width="42" x="24" y="58"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="45" y="140">pantalla</text>
+<rect height="70" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="54" x="83" y="50"></rect>
+<path d="M92 66h36M92 78h28M92 90h32M92 102h20" stroke="var(--muted)" stroke-width="2"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="140">archivo</text>
+<rect height="70" rx="6" stroke="var(--accent)" stroke-width="2" width="54" x="148" y="50"></rect>
+<path d="M160 100l10 8 20-22" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="175" y="140">buen ejemplo</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="172">lo que no ve, se lo muestras</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a régua para quebrar: um pedido, uma prova — sem prova única, são dois pedidos" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="36" rx="8" stroke="var(--line2)" stroke-dasharray="4 3" stroke-width="2" width="180" x="20" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="53">"cierra el mes de Silva"</text>
+<path d="M60 66v20M110 66v20M160 66v20" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="34" opacity=".2" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="25" y="86"></rect>
+<rect fill="var(--accent)" height="34" opacity=".2" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="80" y="86"></rect>
+<rect fill="var(--accent)" height="34" opacity=".2" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="135" y="86"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="55" y="107">organizar</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="107">tabla</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="107">borrador</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="55" y="140">prueba: carpetas</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="140">prueba: tabla</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="140">prueba: correo electrónico</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; quando ele para, o caminho é sempre a mesma conversa — nunca uma nova com o pedido repetido" data-fig="5"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="60" rx="8" stroke="var(--accent)" stroke-width="2" width="180" x="20" y="30"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="52">la conversación fijada</text>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="72">"continúa desde donde lo dejaste"</text>
+<path d="M110 90v30" stroke="var(--accent)" stroke-width="2"></path>
+<path d="M104 114l6 8 6-8" fill="none" stroke="var(--accent)" stroke-width="2"></path>
+<rect height="40" rx="8" stroke="var(--line2)" stroke-dasharray="4 3" stroke-width="2" width="180" x="20" y="130"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="154">conversación nueva = empieza desde cero</text>
+<path d="M30 138l12 12M42 138l-12 12" stroke="var(--muted)" stroke-width="2"></path>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Resalta cualquier fragmento para convertirlo en una tarjeta de repaso.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>Una buena solicitud describe el resultado esperado, como un encargo al carpintero: el asistente elige el camino, y muchas veces encuentra uno más corto que el tuyo.</li>
+<li>Cada tarea delegable tiene un resultado, un lugar y una prueba. Si falta una de las tres partes, inventa, lo hace en el lugar equivocado o te deja buscando.</li>
+<li>Lo que no puede ver, lo adjuntas tú: la captura de pantalla, el archivo y un ejemplo de lo que consideras bueno.</li>
+<li>Si no puedes nombrar una única prueba, el pedido es demasiado grande. Y cuando se detiene a mitad del proceso, «continúa» va en la misma conversación.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr escribir una solicitud que el asistente ejecuta por completo y revisar el resultado en un minuto.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: reescribe la segunda tarea de la clase 1 con el modelo de esta práctica y déjala guardada en su conversación, lista para enviar mañana temprano.</p>
+<p class="na-hook">En la próxima clase, el asistente sale del chat y entra en tu navegador, y verás por qué la revisión final deja de ser opcional el día que publica algo por ti.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-2">← lección 2</a><a href="#aula-4">siguiente: usa el navegador →</a></nav>
+<footer>Clase 3 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-3" type="application/json">
+[
+  {"front":"A contadora escreveu um pedido de 12 linhas explicando em que menu clicar para trocar o rodapé dos relatórios. O que ela deveria ter escrito no lugar?","back":"O destino: 'em todos os relatórios da pasta Setembro, troque o rodapé antigo por este texto, sem alterar mais nada, e me mostre a lista dos alterados'. O caminho é do assistente."},
+  {"front":"Um pedido tem resultado e lugar, mas não tem prova. O que acontece depois que ele diz 'terminei'?","back":"Você sai procurando o que ele fez — abre pastas, compara telas. A prova (lista, captura, rascunho) é o que transforma 'ele fez algo' em 'ele fez isto e eu vi' em um minuto."},
+  {"front":"A arquiteta quer que a página fique 'com o ar' de um portfólio que ela admira. Que anexos ela precisa mandar?","back":"A captura de tela da página atual (o que ela vê) e um exemplo do portfólio admirado (o que ela considera bom). Sem o exemplo, 'com esse ar' vira genérico."},
+  {"front":"Você não consegue nomear uma prova única para conferir o seu pedido em um minuto. O que isso indica e o que fazer?","back":"O pedido é grande demais. Quebre em dois ou três pedidos, cada um com a sua prova — como 'fechar o mês' virou organizar, tabela e rascunho."},
+  {"front":"O assistente parou no meio da tarefa e pediu permissão para abrir o programa de e-mail. Qual a diferença entre responder 'pode, só rascunhos' e abrir uma conversa nova repetindo o pedido?","back":"Na mesma conversa ele continua de onde parou, com a sua condição. Numa conversa nova ele começa do zero, sem o que já fez — você fica com duas metades."}
+]
+</script>
+<!-- COMPLETUDE aula-3 | tipo=FUNDAMENTO | steps=5
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (5/5: contadora s1, arquiteta s2, arquiteta s3, contadora s4, contadora s5)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (5/5)
+  [OK] practice           .practice[data-mode="prompt"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~12 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-3"> presente (5 cartões: diagnóstico, pergunta, aplicação, diagnóstico, contraste)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 5/5 / operação: recap sintetiza, cartões pedem aplicar a cenário
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 4)
+  pool: quiz + cartões + qbefore-after (s2) + qanchor (s5) = 4 (teto 5) · densidade: quadros em s2 e s5, não adjacentes
+-->
+</section>
+<!-- ===== AULA 4 · FERRAMENTA ===== -->
+<section class="view" data-aula="4" data-tempo="20min" id="v-aula-4">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 4</p>
+<h1>El asistente que usa<br/><em>el navegador por ti</em></h1>
+<p class="promise">Al terminar esta clase, podrás activar el uso del navegador con Astra, encargarle una tarea que termine en un borrador real fuera del chat y revisar el nombre, la fecha y el destino antes de darla por terminada.</p>
+<p class="why">La mitad de tu trabajo repetitivo ocurre dentro del navegador: el portal del cliente, el sistema municipal, el correo, la red social. Hasta ahora, el asistente escribía y tú hacías clic. Ahora hace clic él. Eso te libera horas en la semana y crea un riesgo nuevo: el día en que publica algo con el nombre equivocado y nadie lo revisa. Esta clase te enseña a conectar la función y a no saltarte nunca la revisión.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — uma procuração assinada com uma condição escrita à mão -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Un poder: un documento con firma y sello, y una línea escrita a mano que dice «solo borradores, no enviar»." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="200" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="190" x="55" y="20"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="11" text-anchor="middle" x="150" y="52">PODER</text>
+<path d="M80 72h140M80 88h120M80 104h140M80 120h100" stroke="var(--muted)" stroke-width="2"></path>
+<path d="M80 150c20-14 30 12 50 0s30-14 50 0" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+<circle cx="205" cy="152" opacity=".8" r="16" stroke="var(--warm)" stroke-width="2"></circle>
+<text fill="var(--accent)" font-family="var(--serif)" font-size="12" font-style="italic" text-anchor="middle" x="150" y="190">"solo borradores; no enviar"</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="ferramenta" data-versao="Uso do computador pelo ChatGPT, set/2026">
+<h2><span class="n">01</span> "Usar la computadora" es ver tu pantalla y hacer clic como lo harías tú</h2>
+<p>Cuando el asistente usa la computadora, mira la pantalla del navegador como lo haría una persona, decide dónde hacer clic, escribe, desplaza la página y revisa lo que aparece. No es magia ni un atajo secreto: es la misma secuencia de acciones que harías tú, ejecutada por él, mientras tú puedes observar. Ves cómo se abren las páginas y se completan los campos en tiempo real.</p>
+<p>La consecuencia importante: todo lo que puedes hacer en una página, él también puede hacerlo; y todo lo que tú no podrías hacer (una cuenta en la que no tienes sesión iniciada, un sistema que exige un código en el celular), él tampoco. Hereda tu acceso, ni más ni menos.</p>
+<p>La contadora observa cómo el asistente entra al portal de un cliente para descargar los formularios del mes. Ve la página de inicio, ve cómo se abre el menú y se guardan los archivos en la carpeta correcta. Si algo parece estar mal, lo interrumpe. La primera vez, lo revisó todo. La décima, solo la prueba.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="Extensão do ChatGPT para o Chrome, set/2026">
+<h2><span class="n">02</span> Conectar: la extensión en Chrome y el vínculo con la aplicación</h2>
+<p>Para que el asistente vea tu navegador, necesita una <span class="gterm" data-def="Um pequeno complemento que você adiciona ao navegador, uma vez, e que aparece como um ícone ao lado da barra de endereço. É por ele que o assistente vê e opera as páginas abertas." tabindex="0">extensión</span> en Chrome. Esto parece técnico, pero funciona como un enchufe nuevo en la pared: lo conectas una vez y después solo enciendes y apagas lo que está conectado. La extensión es el enchufe; la aplicación de ChatGPT es el aparato.</p>
+<div class="qsteps">
+<p class="qsk">Conectar el uso del navegador en cuatro pasos</p>
+<ol>
+<li>En Chrome, abre la tienda de extensiones, busca la extensión oficial de <b>ChatGPT</b> y agrégala al navegador.</li>
+<li>Haz clic en su ícono junto a la barra de direcciones y <b>activa</b> el uso por la aplicación — puede pedirte que vuelvas a iniciar sesión en tu cuenta; es normal.</li>
+<li>En la aplicación de ChatGPT, abre la conversación fijada y confirma que aparece la indicación de <b>navegador conectado</b>.</li>
+<li>Haz una prueba inofensiva: «abre el sitio del pronóstico del tiempo y dime la temperatura de mañana en mi ciudad». Si abre la pestaña y responde, está activado.</li>
+</ol>
+</div>
+<p>La arquitecta hizo la prueba con el sitio de un proveedor de pisos: «abre la página de este proveedor y dime cuáles son los tres pisos más baratos por metro cuadrado». Vio cómo la pestaña se abría sola, la página se desplazaba y llegaba la respuesta con los precios. Fue suficiente para confiarle el siguiente paso.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="ferramenta" data-versao="ChatGPT com navegador conectado, set/2026">
+<h2><span class="n">03</span> La tarea que termina fuera del chat: completar, preparar, publicar</h2>
+<p>Con el navegador conectado, el pedido de la clase 3 tiene un nuevo destino: el resultado pasa a existir en una página, no en la conversación. Un aviso publicado en el grupo de clientes, un formulario del sistema completado, un correo electrónico preparado. La estructura del pedido no cambia —resultado, lugar, prueba—, pero ahora la prueba es una captura de pantalla del lugar donde quedó.</p>
+<p>La regla de oro para empezar: pide <b>borradores</b>, no envíos. "Prepara el correo y déjalo guardado en borradores, sin enviarlo." "Escribe el aviso en el cuadro de publicación y muéstrame la pantalla antes de publicar." El asistente hace el 95% del trabajo y el clic final sigue siendo tuyo. Después de algunas semanas de revisión sin sobresaltos, decides qué liberar.</p>
+<p>La contadora pidió: «En mi correo electrónico, prepara un mensaje para cada cliente de esta lista para avisarle del plazo del día 20, con el nombre y el valor del formulario de cada uno, y deja todos como borradores. Al final, muéstrame una captura de la carpeta de borradores». Doce borradores en tres minutos. Abrió dos al azar, comprobó el nombre y el valor, y envió todos con un clic cada uno.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Compruébalo siempre: el caso del aviso con el nombre equivocado</h2>
+<p>Un caso real del lanzamiento resume el riesgo. Alguien le pidió al asistente que publicara en un grupo de clientes un aviso sobre una nueva capacitación de GPT-6. Abrió el grupo, redactó un buen texto y lo publicó, pero decía «GPT-5». Todo estaba bien, salvo el detalle que motivaba el aviso. La persona solo se dio cuenta después, al mirar el grupo.</p>
+<p>El error no anula el beneficio: el aviso se escribió y publicó en un minuto. Pero muestra por qué «publica» sin «muéstrame antes» es un riesgo innecesario al principio. Tres cosas que debes revisar en toda tarea que sale del chat: el <b>nombre</b> (del producto, del cliente, de la persona), la <b>fecha o valor</b>, e o <b>destino</b> (el grupo correcto, el correo correcto, la página correcta).</p>
+<div class="qerr">
+<p class="qk">Error común</p>
+<p class="qerr-txt"><b>Pedir "publica" o "envía" durante la primera semana y verificar solo después.</b> Ocurre porque el resultado llega rápido y está bien redactado, y la confianza aumenta antes de que se forme el hábito de revisar. Para evitarlo: durante las primeras semanas, termina cada pedido con «déjalo como borrador y muéstrame la pantalla»; revisa el nombre, la fecha o el valor, y el destino: tres comprobaciones, un minuto.</p>
+</div>
+<p>La arquitecta aplica el mismo criterio al aviso de obra que prepara para el condominio: comprueba el nombre del edificio, la fecha de inicio y si el borrador está en el correo electrónico del administrador correcto. Solo entonces hace clic en enviar. Treinta segundos que evitan una situación incómoda durante semanas.</p>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="tarefa" data-practice="p4">
+<p class="pk">Practica ahora <span class="pcount">0/4 completado</span></p>
+<h3 class="ph">Un borrador real, preparado por el asistente en tu correo</h3>
+<p class="pgoal">Meta: el navegador conectado y un correo real preparado por Astra en tu carpeta de borradores, revisado por ti en cuanto al nombre, la fecha y el destinatario. ~10 min.</p>
+<p class="psafe">El pedido termina con «déjalo en borradores, sin enviar»: nada sale de tu bandeja sin que hagas clic. Si el borrador sale mal, bórralo y vuelve a pedirlo; si el navegador no se conecta, vuelve a los cuatro pasos del paso 02 y no se habrá perdido nada.</p>
+<div class="pcodewrap"><button class="pcopy" type="button">copiar</button><pre class="pcode">No meu e-mail (aba já aberta no navegador), prepare uma mensagem para &lt;nome do cliente&gt;
+avisando que &lt;o assunto: prazo, entrega, reunião&gt; é no dia &lt;data&gt;.
+Tom: &lt;cordial e direto&gt;. Assine como &lt;seu nome e função&gt;.
+Deixe em RASCUNHOS, sem enviar, e me mostre a captura de tela do rascunho pronto.</pre></div>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Haz la prueba inofensiva del paso 02 (pronóstico del tiempo). Está listo cuando abra la pestaña por sí solo y responda.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Abre tu correo en una pestaña de Chrome, completa el modelo de arriba y pégalo en la conversación fijada. Queda listo cuando te muestre la captura del borrador.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Abre tú misma la carpeta de borradores y revisa estas tres cosas: nombre del cliente, fecha, destinatario. Queda listo cuando las tres estén correctas, o cuando hayas anotado cuál estaba mal.</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Decide: envíalo, corrígelo o bórralo. Está listo cuando el borrador tenga un destino que tú elegiste, no el asistente.</label></li>
+</ol>
+<p class="pdone">Acabas de dejar que el asistente trabaje dentro de tu navegador y conservar el clic final para ti.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; ele vê a tela, decide, clica e confere — a mesma sequência sua, com você assistindo" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="110" rx="8" stroke="var(--line2)" stroke-width="2" width="160" x="30" y="20"></rect>
+<rect fill="var(--line2)" height="18" rx="8" width="160" x="30" y="20"></rect>
+<rect height="14" rx="3" stroke="var(--muted)" stroke-width="1.5" width="130" x="45" y="50"></rect>
+<rect height="14" rx="3" stroke="var(--muted)" stroke-width="1.5" width="70" x="45" y="72"></rect>
+<rect fill="var(--accent)" height="20" opacity=".3" rx="6" stroke="var(--accent)" stroke-width="2" width="60" x="45" y="98"></rect>
+<path d="M100 118l6 10 4-4 6 6" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="160">ves → decides → haces clic → verificas</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="180">con tu acceso, ni más ni menos</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a extensão é a tomada no navegador; o aplicativo é o aparelho — encaixa uma vez, liga quando precisa" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="110" rx="8" stroke="var(--line2)" stroke-width="2" width="80" x="20" y="40"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="62">Chrome</text>
+<rect fill="var(--accent)" height="30" opacity=".25" rx="6" stroke="var(--accent)" stroke-width="2" width="30" x="45" y="80"></rect>
+<circle cx="55" cy="95" fill="var(--accent)" r="2.5"></circle><circle cx="65" cy="95" fill="var(--accent)" r="2.5"></circle>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="130">extensión</text>
+<path d="M100 95h30" stroke="var(--accent)" stroke-width="2.5"></path>
+<rect fill="var(--accent)" height="70" opacity=".15" rx="8" stroke="var(--accent)" stroke-width="2" width="70" x="130" y="60"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="165" y="90">aplicación</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="165" y="106">ChatGPT</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="175">enchufe + aparato</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o mesmo pedido, agora com destino numa página — e a prova vira a captura de tela do lugar" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="50" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="80" x="20" y="30"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="52">resultado</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="66">lugar · prueba</text>
+<path d="M100 55h25" stroke="var(--accent)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="70" opacity=".18" rx="8" stroke="var(--accent)" stroke-width="2" width="80" x="125" y="20"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="48">página</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="64">borrador</text>
+<rect height="50" rx="6" stroke="var(--warm)" stroke-width="2" width="80" x="125" y="115"></rect>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="136">captura</text>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="165" y="152">= la prueba</text>
+<path d="M165 90v25" stroke="var(--warm)" stroke-width="2"></path>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; as três olhadas de um minuto antes de liberar: nome, data ou valor, destino" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="150" rx="8" stroke="var(--line2)" stroke-width="2" width="160" x="30" y="20"></rect>
+<rect height="24" rx="5" stroke="var(--accent)" stroke-width="2" width="130" x="45" y="40"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="56">nombre</text>
+<rect height="24" rx="5" stroke="var(--accent)" stroke-width="2" width="130" x="45" y="78"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="94">fecha o valor</text>
+<rect height="24" rx="5" stroke="var(--accent)" stroke-width="2" width="130" x="45" y="116"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="132">destino</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="188">tres revisiones, un minuto</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">El uso del navegador hereda tu acceso: lo que tú no puedes abrir, él tampoco.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>Usar la computadora significa que el asistente ve la pantalla y hace clic como tú lo harías, con tu acceso y mientras tú observas.</li>
+<li>La extensión de Chrome es el enchufe que conecta el navegador con la aplicación; una prueba sencilla confirma que está conectada.</li>
+<li>Con el navegador conectado, el resultado del pedido pasa a existir en una página, y la prueba se convierte en una captura de pantalla de ese lugar.</li>
+<li>Al principio, todo termina en un borrador. Revisa el nombre, la fecha o el valor y el destino: el clic final es tuyo.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr que el asistente trabaje dentro de tu navegador sin renunciar al clic final.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: elige un sitio que abres todas las semanas solo para buscar información (un portal, un sistema, una tabla de precios) y pídele a Astra que lo abra y te traiga la información de hoy; solo lectura, sin completar nada.</p>
+<p class="na-hook">En la próxima clase, el resultado queda peor que antes, y aprendes a pedir una nueva versión, compararla y volver atrás sin perder nada: eso es lo que distingue a quien lo usa bien de quien se rinde.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-3">← lección 3</a><a href="#aula-5">siguiente: versiones y cómo volver atrás →</a></nav>
+<footer>Clase 4 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-4" type="application/json">
+[
+  {"front":"A contadora quer que o assistente baixe as guias do portal de um cliente em que ela nunca entrou com a própria senha. Ele consegue? Por quê?","back":"Não — ele herda o acesso dela, nem mais nem menos. Se ela não consegue entrar, ele também não. Primeiro ela entra uma vez; depois ele opera a página aberta."},
+  {"front":"O assistente publicou um aviso bem escrito, mas com o nome do produto antigo. Que parte do pedido faltou, e como o pedido seguinte deve terminar?","back":"Faltou 'me mostre antes' — o pedido foi direto para 'publique'. O seguinte termina com 'deixe como rascunho e me mostre a tela' — e antes de liberar ela olha as três coisas: quem, quando e para onde."},
+  {"front":"Você fez o teste da previsão do tempo e ele respondeu sem abrir nenhuma aba. O navegador está conectado?","back":"Provavelmente não — ele respondeu de memória ou por busca, não pelo seu navegador. A prova de conexão é a aba abrindo sozinha na sua tela. Volte aos passos da extensão."},
+  {"front":"A arquiteta já conferiu 30 avisos de obra preparados pelo assistente, todos certos. Pode passar a pedir 'envie' direto?","back":"Pode decidir isso — a escolha é dela, não dele. O que muda é o histórico de conferências sem susto; mesmo assim, mantém as três olhadas nos casos com nome, valor ou destino sensíveis."}
+]
+</script>
+<!-- COMPLETUDE aula-4 | tipo=FERRAMENTA | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: contadora s1, arquiteta s2, contadora s3, arquiteta s4)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~10 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-4"> presente (4 cartões: aplicação, diagnóstico, diagnóstico, decisão)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 4/4 / operação: recap sintetiza, cartões aplicam a cenário novo
+  [N/A] teste-se-FUND     aula é FERRAMENTA (obrigação não se aplica); sem teste-se opcional
+  pool: qerr (s4) + qsteps (s2) + cartões = 3 (teto 5) · densidade: quadros em s2 e s4, não adjacentes · data-versao em 3 steps-ferramenta
+-->
+</section>
+<!-- ===== AULA 5 · FUNDAMENTO ===== -->
+<section class="view" data-aula="5" data-tempo="22min" id="v-aula-5">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 5</p>
+<h1>Iterar sin miedo:<br/><em>versiones y volver atrás</em></h1>
+<p class="promise">Al terminar esta clase, podrás pedir una nueva versión de algo que hizo Astra, decir exactamente qué empeoró, comparar ambas y restaurar la anterior cuando la nueva haya quedado peor, sin perder ninguna de las dos.</p>
+<p class="why">La primera versión rara vez es la final, y ahí es donde mucha gente se rinde: pide «déjalo más bonito», recibe algo peor y concluye que «la herramienta no sirve». El problema no es la herramienta, sino el pedido vago y el miedo a estropear lo que ya estaba bien. Quien aprende a iterar —pedir, mirar, señalar el problema, volver a pedir— llega en tres rondas adonde los demás nunca llegan.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — pranchetas de projeto empilhadas, cada uma com uma etiqueta "v1", "v2", "v3", e a v2 com um clipe de "aprovada" -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Tres tableros de proyecto apilados, etiquetados v1, v2 y v3; la v2 tiene un clip que indica que fue la aprobada." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="110" rx="4" stroke="var(--line2)" stroke-width="2" width="150" x="40" y="90"></rect>
+<rect fill="var(--panel)" height="110" rx="4" stroke="var(--accent)" stroke-width="2.5" width="150" x="70" y="60"></rect>
+<rect fill="var(--panel)" height="110" rx="4" stroke="var(--line2)" stroke-width="2" width="150" x="100" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" x="52" y="192">v1</text>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="10" x="82" y="162">v2 · aprobada</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" x="112" y="132">v3 · peor</text>
+<path d="M120 50h100M120 66h70M120 82h90" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="18" rx="4" width="26" x="62" y="52"></rect>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> La primera versión rara vez es la final, y eso es normal</h2>
+<p>Cuando encargas un proyecto, el primer borrador es una propuesta, no la entrega. Con el asistente pasa lo mismo: la primera versión existe para que la mires y reacciones. Esperar que venga lista es tener la expectativa equivocada; lo que entrega rápido es la <b>primera versión en minutos</b>, y lo que entregas es tu criterio sobre ella.</p>
+<p>Esto cambia tu cálculo del tiempo. Antes, una tarde de trabajo producía una versión. Ahora, diez minutos producen tres, y la tercera suele ser la buena. La habilidad no está en acertar a la primera, sino en reaccionar bien entre una versión y otra.</p>
+<p>La arquitecta pidió al asistente que hiciera el mapa de proyectos del estudio «más bonito y más útil». La primera versión llegó más oscura, con menos información y claramente peor que la anterior. Casi se rindió ahí. En cambio, la miró, anotó qué había empeorado y volvió a pedirlo. La segunda quedó mejor que la original.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="fundamento">
+<h2><span class="n">02</span> "Hazlo más bonito" es vago: di qué quedó peor</h2>
+<p>Una buena solicitud para una nueva versión tiene la misma estructura que una solicitud de tarea: señala el problema concreto, dice qué conservar y pide una prueba. «Más bonito» no señala nada. «Quedó más oscuro y perdió los nombres de los proyectos; conserva el esquema de colores anterior y vuelve a poner los nombres» señala dos problemas y algo que se debe conservar.</p>
+<p>La fórmula consiste en comparar la versión nueva con la anterior mediante tres preguntas: ¿qué empeoró? ¿Qué mejoró y debería quedarse? ¿Qué falta todavía? Las respuestas se convierten en el pedido. Sin comparar, reaccionas a la versión nueva sin contexto y el pedido vuelve a quedar vago.</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">"No me gustó, hazlo más bonito." La contadora recibe una tercera versión, distinta de las dos anteriores y sin relación con lo que le molestaba. Cuatro rondas, ninguna buena.</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Después</p><p class="qba-txt">"En la nueva versión, la tabla perdió la columna de vencimiento y los colores quedaron demasiado fuertes. Mantén el nuevo encabezado, que quedó mejor, recupera la columna y usa tonos más claros." Una ronda y listo.</p></div>
+<div class="qba-saldo">Saldo: de <b>cuatro rondas</b> sin resultados para <b>una ronda</b> — la diferencia está en nombrar el problema en lugar de nombrar el sentimiento.</div>
+</div>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> Volver atrás: pide restaurar la versión anterior</h2>
+<p>Cuando la nueva versión queda peor y no quieres insistir, hay una forma sencilla: "Restaura la versión anterior." El asistente guarda lo que hizo en cada etapa de una conversación y sabe volver al estado anterior al último pedido. Esto sirve para una página, un documento, una tabla — cualquier cosa que haya modificado por pedido tuyo.</p>
+<p>Piensa en una <span class="gterm" data-def="Cada estado de um trabalho depois de uma alteração. O assistente guarda as versões de uma conversa e consegue voltar à anterior quando você pede." tabindex="0">versión</span> como un portapapeles guardado: la nueva no borra la anterior, solo queda encima. Saberlo te quita el miedo a pedir cambios audaces. En el peor de los casos, dices «vuelve a como estaba» y pierdes dos minutos.</p>
+<p>La contadora pidió una reorganización completa de la hoja de cálculo para controlar a los clientes. La nueva versión era lógica, pero ya no se ubicaba en ella. «Restaura la versión anterior y haz solo un cambio: separa a los clientes activos de los inactivos en pestañas». Obtuvo lo que necesitaba sin perder la hoja de cálculo que conocía.</p>
+<div class="quiz" data-answer="a">
+<p class="qk">Ponte a prueba</p><p class="q">La nueva versión de la página quedó peor y la arquitecta no quiere gastar más rondas hoy. ¿Cuál es el pedido correcto?</p>
+<button class="opt" data-fb="Exatamente — a versão anterior está guardada; ela só precisa pedir. A nova não apagou a antiga." data-k="a">"Restaura la versión anterior."</button>
+<button class="opt" data-fb="Refazer do zero descarta o que já estava bom e ainda gasta uma rodada — a anterior está guardada, é só pedir que volte." data-k="b">"Borra todo y rehace la página desde cero."</button>
+<button class="opt" data-fb="Abrir conversa nova perde o histórico de versões — o 'volte como estava' só funciona na mesma conversa." data-k="c">Abrir una conversación nueva y enviar la captura de la página anterior.</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Probar una idea audaz sin estropear lo que ya funciona</h2>
+<p>A veces quieres probar algo radical —una página entera diferente, un nuevo formato de informe—, pero no quieres arriesgar lo que está en uso. La forma de hacerlo es pedir una <b>copia de borrador</b>: «Haz una copia de esta página y, solo en la copia, prueba un estilo completamente diferente. La original queda como está». Si te gusta, pídele que lo aplique a la original. Si no, borra la copia.</p>
+<p>Es lo que hace un estudio con un proyecto en curso: la versión aprobada queda guardada y la prueba se hace en un tablero aparte. Con el asistente, basta una frase. La regla es: cambios pequeños, en la original con «restaure» como red de seguridad; cambios grandes, en una copia.</p>
+<p class="qanchor">Atreverse a pedir algo es fácil cuando basta una frase para deshacerlo. El valor no está en la idea, sino en saber que nada se pierde.</p>
+<p>La arquitecta quiso probar un portafolio solo con fotos grandes, sin texto. Lo pidió en la copia, la observó durante dos días y decidió que prefería el original con dos fotos más grandes. Aplicó solo eso. La audacia dio como resultado una mejora pequeña y segura, sin una semana con la página rota.</p>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- STEP 5 -->
+<section class="step" data-fig="5" data-kind="fundamento">
+<h2><span class="n">05</span> El ciclo completo: pedir, revisar, nombrar, volver a pedir</h2>
+<p>Al juntar las piezas, el ciclo de iteración tiene cuatro pasos que se repiten hasta que apruebes el resultado. <b>Pedir</b> la versión con resultado, lugar y prueba. <b>Mirar</b> la prueba, comparándola con la anterior. <b>Poner nombre</b> lo que empeoró, lo que quedó bien y lo que falta. <b>Pedir de nuevo</b> con estas tres respuestas, o restaurar si la ronda no valió la pena.</p>
+<p>Tres rondas suelen ser suficientes. Si en la cuarta aún no has aprobado, casi siempre falta una referencia: el asistente no sabe cuáles son tus gustos. Ese es el tema de la próxima clase, y es lo que convierte tres rondas en una.</p>
+<p>La contadora aplicó el ciclo al modelo de informe mensual: lo pidió, lo revisó, indicó los cambios («la fuente quedó pequeña, los totales desaparecieron») y volvió a pedirlo. En la tercera ronda, lo aprobó y pidió que lo aplicara a los 40 informes de la carpeta. La arquitecta hizo lo mismo con la página del portafolio. Dos profesiones, el mismo ciclo: solo cambia lo que cada una revisa en la prueba.</p>
+<div class="mobfig" data-mobfig="5"></div>
+<button class="readbtn" data-read="s5">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="prompt" data-practice="p5">
+<p class="pk">Practica ahora <span class="pcount">0/3 completado</span></p>
+<h3 class="ph">Una ronda de iteración con comparación y una prueba de «restaurar»</h3>
+<p class="pgoal">Meta: pedir una nueva versión de algo que Astra ya hizo para ti (la tarea de la clase 3 o 4), compararla y probar una vez la opción "restaura". ~10 min.</p>
+<p class="psafe">En esta práctica no se pierde nada: la versión anterior queda guardada en la conversación, y el último paso es justamente pedir que vuelva. Si algo te parece extraño, "restaura la versión anterior" deshace la ronda.</p>
+<div class="pcodewrap"><button class="pcopy" type="button">copiar</button><pre class="pcode">Comparando a versão nova com a anterior:
+- piorou: &lt;o que ficou pior, concreto&gt;
+- ficou bom, mantenha: &lt;o que melhorou&gt;
+- ainda falta: &lt;o que não apareceu&gt;
+Faça uma nova versão com isso e me mostre &lt;a mesma prova de antes&gt;.</pre></div>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> En la conversación de la tarea de la clase 3 o 4, pide una nueva versión con algún cambio ("haz el texto más corto", "cambia el orden"). Terminas cuando llegue la nueva prueba.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Completa el modelo de arriba comparando las dos versiones y envíalo. Deberías ver una tercera versión que conserva lo que marcaste como bueno. Está listo cuando eso ocurra.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Escribe «restaura la versión anterior» y comprueba que volvió la segunda versión. Está listo cuando la prueba muestre la versión anterior.</label></li>
+</ol>
+<p class="pdone">Acabas de recorrer todo el ciclo —pedir, comparar, nombrar, volver atrás— y viste que ninguna versión se pierde en el camino.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a primeira versão é proposta, não entrega — o ganho está em quantas versões cabem em dez minutos" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="60" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="20" y="40"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="45" y="75">v1</text>
+<path d="M70 70h20" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="60" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="90" y="40"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="115" y="75">v2</text>
+<path d="M140 70h20" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="60" opacity=".22" rx="6" stroke="var(--accent)" stroke-width="2" width="50" x="160" y="40"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="185" y="75">v3</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="115" y="140">10 minutos, tres versiones</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="115" y="160">el criterio entre ellas es tuyo</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; as três perguntas da comparação viram o pedido — sem comparar, o pedido sai vago outra vez" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="70" rx="6" stroke="var(--line2)" stroke-width="2" width="60" x="15" y="20"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="45" y="60">anterior</text>
+<rect height="70" rx="6" stroke="var(--accent)" stroke-width="2" width="60" x="145" y="20"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="175" y="60">nueva</text>
+<path d="M75 55h70" stroke="var(--muted)" stroke-dasharray="4 3" stroke-width="2"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="48">compara</text>
+<rect fill="var(--accent)" height="22" opacity=".15" rx="5" width="160" x="30" y="112"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="127">¿empeoró?</text>
+<rect fill="var(--accent)" height="22" opacity=".15" rx="5" width="160" x="30" y="140"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="155">¿quedó bien, lo mantienes?</text>
+<rect fill="var(--accent)" height="22" opacity=".15" rx="5" width="160" x="30" y="168"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="183">¿todavía falta?</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a versão nova fica por cima da antiga, não no lugar dela — 'restaure' é só tirar a de cima" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="60" opacity=".2" rx="6" stroke="var(--accent)" stroke-width="2" width="140" x="40" y="110"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="145">anterior (guardada)</text>
+<rect fill="var(--panel)" height="60" rx="6" stroke="var(--line2)" stroke-width="2" width="140" x="55" y="60"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="125" y="95">nueva (por encima)</text>
+<path d="M170 45l20-20M190 25h-14M190 25v14" fill="none" stroke="var(--warm)" stroke-width="2"></path>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="150" y="40">"restaura"</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; mudança pequena na original, com 'restaure' de rede; mudança grande numa cópia — a original não é tocada" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="100" opacity=".18" rx="6" stroke="var(--accent)" stroke-width="2" width="80" x="20" y="40"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="80">original</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="98">en uso</text>
+<path d="M100 90h20" stroke="var(--muted)" stroke-dasharray="3 3" stroke-width="2"></path>
+<rect height="100" rx="6" stroke="var(--line2)" stroke-dasharray="5 4" stroke-width="2" width="80" x="120" y="40"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="80">copia</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="98">experimento</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="170">¿te gustó? aplícala · ¿no? borra la copia</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o ciclo de quatro movimentos, repetido até aprovar — três rodadas costumam bastar" data-fig="5"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<circle cx="110" cy="100" r="62" stroke="var(--line2)" stroke-dasharray="4 4" stroke-width="2"></circle>
+<rect fill="var(--accent)" height="26" opacity=".22" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="80" y="18"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="35">pedir</text>
+<rect fill="var(--accent)" height="26" opacity=".22" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="150" y="87"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="180" y="104">mirar</text>
+<rect fill="var(--accent)" height="26" opacity=".22" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="80" y="156"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="173">nombrar</text>
+<rect fill="var(--accent)" height="26" opacity=".22" rx="6" stroke="var(--accent)" stroke-width="1.5" width="60" x="10" y="87"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="40" y="104">volver a pedir</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Resalta cualquier fragmento para convertirlo en una tarjeta de repaso.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>La primera versión es una propuesta para que reacciones; la verdadera ventaja es poder probar tres versiones en diez minutos, con tu criterio entre una y otra.</li>
+<li>Una solicitud para una nueva versión indica qué empeoró, qué debe conservarse y qué falta, comparándola con la anterior, nunca sin una referencia.</li>
+<li>Cada versión queda guardada: «restaura la versión anterior» deshace una ronda fallida, y una copia de borrador protege el original de experimentos grandes.</li>
+<li>Si la cuarta ronda todavía no te convence, lo que falta es una referencia de gustos: el tema de la próxima clase.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr iterar con el asistente sin miedo y comprobar que volver atrás cuesta una frase.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: toma algo que el asistente ya entregó y aceptaste «a regañadientes», y haz una ronda con el modelo de esta clase: ¿empeoró?, ¿lo mantienes?, ¿qué falta?</p>
+<p class="na-hook">En la próxima clase, creas una guía de estilo de una página con tus preferencias: así la primera versión ya tendrá tu estilo y tres rondas se convertirán en una.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-4">← lección 4</a><a href="#aula-6">siguiente: la guía de estilo →</a></nav>
+<footer>Clase 5 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-5" type="application/json">
+[
+  {"front":"A versão nova veio pior e você sente vontade de escrever 'não gostei, deixa mais bonito'. O que escreve no lugar?","back":"A comparação em três respostas: o que piorou (concreto), o que ficou bom e deve ficar, o que ainda falta — e a mesma prova de antes."},
+  {"front":"Qual a diferença entre pedir 'restaure a versão anterior' e pedir 'refaça do zero'?","back":"Restaurar volta ao que já estava aprovado, sem gastar uma rodada. Refazer do zero descarta o que estava bom e ainda produz uma versão nova para julgar."},
+  {"front":"A contadora quer testar um formato de relatório totalmente diferente, mas os 40 relatórios do mês já estão em uso. Onde ela pede o experimento?","back":"Numa cópia de rascunho: 'faça uma cópia e teste só nela'. A original fica intocada; se gostar, aplica; se não, apaga a cópia."},
+  {"front":"Você está na quinta rodada de uma página e ainda não aprovou nada. Qual é o diagnóstico mais provável?","back":"Falta de referência de gosto, não de rodadas — o assistente não sabe o que 'bom' significa para você. A solução é dar exemplos e regras, não pedir uma sexta versão."},
+  {"front":"Por que pedir uma mudança ousada deixa de ser arriscado depois desta aula?","back":"Porque nenhuma versão se perde: a nova fica por cima da antiga, 'restaure' desfaz em uma frase e a cópia isola o experimento. O custo do pior caso é dois minutos."}
+]
+</script>
+<!-- COMPLETUDE aula-5 | tipo=FUNDAMENTO | steps=5
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (5/5: arquiteta s1, contadora s2, contadora s3, arquiteta s4, contadora+arquiteta s5)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (5/5)
+  [OK] practice           .practice[data-mode="prompt"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~10 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-5"> presente (5 cartões: aplicação, contraste, decisão, diagnóstico, pergunta)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 5/5 / operação: recap sintetiza, cartões aplicam ou diagnosticam
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 3)
+  pool: quiz + cartões + qbefore-after (s2) + qanchor (s4) = 4 (teto 5) · densidade: quadros em s2 e s4, não adjacentes
+-->
+</section>
+<!-- ===== AULA 6 · FUNDAMENTO ===== -->
+<section class="view" data-aula="6" data-tempo="24min" id="v-aula-6">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 6</p>
+<h1>Muéstrale tus gustos:<br/><em>la guía de estilo</em></h1>
+<p class="promise">Al terminar esta clase, podrás armar una guía de estilo de una página —2 ejemplos que admiras y 5 reglas propias— y adjuntarla a un pedido para que Astra entregue algo que refleje tu estilo en el primer o segundo intento.</p>
+<p class="why">Pide una página "bonita" sin una referencia y recibirás la página que cualquiera recibiría: limpia, oscura, sin nada tuyo. No es una limitación del asistente — le falta información. Nunca ha visto qué consideras bonito, el tono que usas con los clientes ni los colores de tu oficina. Una página de guía resuelve eso de una vez y sirve para todos los pedidos de aquí en adelante.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — um mostruário de tecidos e cores de um escritório, com etiquetas "sempre" e "nunca" -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Un muestrario de colores y telas sujeto a un tablero, con etiquetas «siempre» y «nunca» junto a algunas muestras." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="190" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="220" x="40" y="25"></rect>
+<rect fill="var(--accent)" height="44" opacity=".8" rx="4" width="44" x="60" y="48"></rect>
+<rect fill="var(--accent)" height="44" opacity=".4" rx="4" width="44" x="114" y="48"></rect>
+<rect fill="var(--warm)" height="44" opacity=".6" rx="4" width="44" x="168" y="48"></rect>
+<rect fill="var(--line2)" height="44" rx="4" width="20" x="222" y="48"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="82" y="112">siempre</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="232" y="112">nunca</text>
+<rect height="14" rx="3" stroke="var(--muted)" stroke-width="1.5" width="182" x="60" y="130"></rect>
+<rect height="14" rx="3" stroke="var(--muted)" stroke-width="1.5" width="140" x="60" y="152"></rect>
+<rect height="14" rx="3" stroke="var(--muted)" stroke-width="1.5" width="160" x="60" y="174"></rect>
+<text fill="var(--ink-soft)" font-family="var(--serif)" font-size="12" font-style="italic" text-anchor="middle" x="150" y="205">la sala de exposición de la oficina</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="fundamento">
+<h2><span class="n">01</span> Desde cero, entrega lo «genérico» — y no es un defecto</h2>
+<p>Cuando tu pedido no incluye ninguna referencia de gustos, el asistente hace lo que haría cualquier profesional sin un briefing: entrega el promedio de lo que suele gustar. Una página web rediseñada desde cero queda correcta y sin gracia, parecida a mil otras. No es pereza ni una limitación; es la ausencia de un dato que solo tú tienes.</p>
+<p>Piensa en un nuevo colaborador talentoso en su primer día. Si le pides "prepara una presentación bonita", preparará una presentación bonita — según su gusto, que no es el tuyo. El asistente es ese colaborador, todos los días son su primer día y la única forma de que acierte con tus gustos es que se los cuentes.</p>
+<p>La arquitecta pidió al asistente una nueva versión del sitio del estudio, sin darle una referencia. Recibió una página oscura, minimalista, técnicamente impecable y completamente diferente de su trabajo, que es claro y está lleno de madera y luz natural. Descartó la versión y concluyó, correctamente, que el problema estaba en el pedido.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="fundamento">
+<h2><span class="n">02</span> Un ejemplo vale más que diez adjetivos</h2>
+<p>"Elegante", "moderno" y "acogedor" significan cosas distintas para cada persona. Un ejemplo, no: la página de alguien que admiras, un informe que te pareció claro, un correo que guardaste como modelo. Cuando adjuntas el ejemplo y dices "con este estilo, manteniendo mi contenido", el asistente tiene algo concreto que imitar en lugar de un adjetivo que interpretar.</p>
+<p>Bastan dos ejemplos, y es mejor que sean diferentes entre sí: uno muestra el tono y el otro, la forma. Más de tres confunden, porque intenta complacer a todos al mismo tiempo. Di también qué admiras de cada uno, en una línea: «me gusta el espacio en blanco de este» o «me gusta cómo este resume en tres frases».</p>
+<div class="quiz" data-answer="b">
+<p class="qk">Ponte a prueba</p><p class="q">La contadora quiere que los informes mensuales se vean «más profesionales». ¿Qué pedido tiene más probabilidades de acertar a la primera?</p>
+<button class="opt" data-fb="Adjetivos empilhados continuam sendo adjetivos — ele vai interpretar cada um do jeito dele." data-k="a">"Haz que el informe se vea más profesional, serio, elegante y limpio."</button>
+<button class="opt" data-fb="Exatamente — o exemplo mostra o que 'profissional' significa para ela, e a linha diz o que copiar dele." data-k="b">"Dale el estilo de este informe adjunto; me gusta cómo separa los totales en un recuadro en la parte superior."</button>
+<button class="opt" data-fb="Cinco exemplos sem dizer o que admira em cada um viram ruído — ele tenta misturar todos e sai uma média." data-k="c">Adjuntar cinco informes de oficinas diferentes y pedir «algo así».</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> La guía de estilo: 5 reglas que siempre repites</h2>
+<p>Además de los ejemplos, hay cosas que sabes sobre tu trabajo y repites en cada corrección: «nunca uses rojo», «firma siempre con el nombre completo», «títulos cortos», «háblame de ti, nunca de nosotros». Eso es un <span class="gterm" data-def="Um documento curto, seu, com exemplos que você admira e regras do que fazer sempre e nunca — anexado a todo pedido que envolva aparência ou tom." tabindex="0">guía de estilo</span>. No tiene que ser bonito ni largo: <b>una página</b>, con 2 ejemplos, 5 reglas sobre qué hacer y 3 cosas que nunca debes hacer.</p>
+<p>Escribe las reglas como se las dirías a un nuevo colaborador, no como si fuera un manual. «Siempre destaca el total del mes en la parte superior» es una regla. «Priorizar la jerarquía visual de la información financiera» es un manual, y el asistente entiende mejor la primera, porque es lo que realmente harías.</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">Cada pedido de la arquitecta empieza desde cero: «que quede claro, con madera, con luz». Tres rondas por página, y en la página siguiente vuelve a empezar la misma conversación.</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Después</p><p class="qba-txt">Ella adjunta la guía de una página en cada pedido: 2 portafolios que admira, 5 reglas («fotos grandes, texto corto, tonos claros, un color de acento, nunca un fondo oscuro»). La primera versión ya tiene el tono adecuado.</p></div>
+<div class="qba-saldo">Saldo: de <b>3 rondas por página</b> para <b>1 o 2</b> — y la guía se escribe una vez y se reutiliza en cada pedido siguiente.</div>
+</div>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Guárdala y reutilízala: la guía se convierte en un documento que adjuntas</h2>
+<p>La guía solo funciona si siempre está a mano. Guárdala como un documento sencillo —un archivo de texto o un documento del editor que ya usas— con un nombre que reconozcas: «guía de estilo — oficina». A partir de ahí, todo pedido de una tarea relacionada con la apariencia o el tono empieza con «sigue la guía adjunta». No vuelves a escribir las reglas: las adjuntas.</p>
+<p>Con el tiempo, la guía crece. Cada vez que corriges al asistente por segunda vez sobre lo mismo, es señal de que faltó una regla: agrega una línea. La guía se convierte en la memoria de tus preferencias y también empieza a servirles a otras personas o asistentes que trabajen contigo.</p>
+<p>La contadora tiene dos guías: una de apariencia (informes y tablas) y otra de tono (correos y avisos para clientes: «cordial, directo, sin jerga, siempre con el plazo en negrita»). Cuando pide un aviso, adjunta la de tono. Cuando pide un informe, la de apariencia. Cada una cabe en una página y nació de las correcciones que se cansó de repetir.</p>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- STEP 5 -->
+<section class="step" data-fig="5" data-kind="fundamento">
+<h2><span class="n">05</span> Cuando conoce tus gustos, un intento vale por diez</h2>
+<p>Junta las dos clases: el ciclo de iteración de la clase 5 sigue existiendo, pero con la guía empieza más cerca del final. La primera versión ya respeta las reglas que te importan; la siguiente ronda, si la hay, ajusta detalles en vez de rehacer el rumbo. El tiempo que gastabas explicando de nuevo se convierte en tiempo para evaluar.</p>
+<p>Hay un límite claro: la guía no reemplaza la revisión. Acierta con los gustos, no con los datos. El nombre, la fecha, el valor y el destino siguen siendo las tres comprobaciones de la lección 4. La guía reduce las rondas de ajustes visuales; la revisión sigue protegiendo el contenido.</p>
+<p class="qanchor">El asistente no adivina tus gustos. Imita lo que le muestras y obedece lo que escribes, una vez, en una página.</p>
+<p>La arquitecta y la contadora tienen hoy el mismo hábito: pedido de tarea, guía adjunta, prueba al final. Para una, la guía habla de fotos y tonos; para la otra, de totales y plazos. El mecanismo es idéntico y hace que la primera versión parezca hecha por alguien que las conoce.</p>
+<div class="mobfig" data-mobfig="5"></div>
+<button class="readbtn" data-read="s5">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="tarefa" data-practice="p6">
+<p class="pk">Practica ahora <span class="pcount">0/4 completado</span></p>
+<h3 class="ph">Crea tu guía de estilo de una página y úsala una vez</h3>
+<p class="pgoal">Meta: un documento de una página con 2 ejemplos, 5 reglas y 3 "nunca", adjunto a una solicitud real, con una primera versión que respete al menos 3 de las 5 reglas. ~12 min.</p>
+<p class="psafe">La guía es un documento tuyo, guardado donde quieras: no se envía ni se publica nada. Si la primera versión del asistente ignora una regla, no es culpa tuya: agrega la regla de forma más concreta y vuelve a pedirlo en la misma conversación.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Elige 2 ejemplos que admires (una página, un informe, un correo electrónico) y anota en una línea qué admiras de cada uno. Está listo cuando ambos estén guardados como archivo o captura de pantalla, con la línea al lado.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Escribe 5 reglas sobre lo que siempre debe hacer y 3 sobre lo que nunca debe hacer, como se lo dirías a un nuevo colaborador. Ejemplo aceptable: «siempre destaca el total del mes en la parte superior»; «nunca uses más de un color de acento». Está listo cuando existan las 8 líneas.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Guarda todo en un documento de una página llamado «guía de estilo — &lt;tu nombre o estudio&gt;». Está listo cuando puedas abrirlo por su nombre.</label></li>
+<li><label><input data-ptask="4" type="checkbox"/> Adjunta la guía a un pedido real (una nueva versión de la página, del informe o del correo de la clase 5), empezando con «sigue la guía adjunta». Revisa: ¿la primera versión respeta al menos 3 de las 5 reglas? Queda listo cuando las hayas contado.</label></li>
+</ol>
+<p class="pdone">Acabas de darle al asistente la memoria de tus gustos: una página que sirve para todas las solicitudes de aquí en adelante.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; sem referência, o assistente entrega a média do que agrada a todos — o dado que falta só você tem" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="80" rx="6" stroke="var(--line2)" stroke-width="2" width="60" x="20" y="40"></rect>
+<rect height="80" rx="6" stroke="var(--line2)" stroke-width="2" width="60" x="80" y="40"></rect>
+<rect height="80" rx="6" stroke="var(--line2)" stroke-width="2" width="60" x="140" y="40"></rect>
+<path d="M30 60h40M30 72h30M30 84h36M90 60h40M90 72h30M90 84h36M150 60h40M150 72h30M150 84h36" stroke="var(--muted)" stroke-width="2"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="150">correcto · igual a mil otras</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="172">falta tu gusto, no la capacidad</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; adjetivos se interpretam; exemplos se imitam — dois exemplos, com uma linha dizendo o que admira em cada" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="50" rx="8" stroke="var(--line2)" stroke-dasharray="4 3" stroke-width="2" width="85" x="15" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="57" y="52">"elegante"</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="57" y="68">? ? ?</text>
+<rect fill="var(--accent)" height="50" opacity=".2" rx="8" stroke="var(--accent)" stroke-width="2" width="85" x="120" y="30"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="162" y="52">ejemplo</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="162" y="68">+ "me gusta X"</text>
+<path d="M162 80v30" stroke="var(--accent)" stroke-width="2"></path>
+<rect height="50" rx="8" stroke="var(--accent)" stroke-width="2" width="85" x="120" y="110"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="162" y="140">imita</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="57" y="140">interpreta</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o guia de uma página: 2 exemplos, 5 regras do que fazer, 3 do que nunca fazer" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="170" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="130" x="45" y="15"></rect>
+<rect fill="var(--accent)" height="30" opacity=".3" rx="3" width="46" x="58" y="30"></rect>
+<rect fill="var(--accent)" height="30" opacity=".3" rx="3" width="46" x="116" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="76">2 ejemplos</text>
+<path d="M58 92h100M58 104h90M58 116h100M58 128h80M58 140h96" stroke="var(--accent)" stroke-width="2"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="156">5 siempre</text>
+<path d="M58 166h60M58 176h70" stroke="var(--warm)" stroke-width="2"></path>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="150" y="176">3 nunca</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; o guia é um documento salvo e anexado — cresce uma linha cada vez que você corrige a mesma coisa duas vezes" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="80" opacity=".18" rx="6" stroke="var(--accent)" stroke-width="2" width="70" x="20" y="60"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="55" y="95">guía de</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="55" y="110">estilo</text>
+<path d="M90 100h30M120 100l-6-5M120 100l-6 5" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="34" rx="6" stroke="var(--line2)" stroke-width="2" width="75" x="125" y="40"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="162" y="61">solicitud 1</text>
+<rect height="34" rx="6" stroke="var(--line2)" stroke-width="2" width="75" x="125" y="83"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="162" y="104">solicitud 2</text>
+<rect height="34" rx="6" stroke="var(--line2)" stroke-width="2" width="75" x="125" y="126"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="162" y="147">solicitud 3</text>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="55" y="165">+1 línea por cada corrección repetida</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; com o guia, o ciclo de iteração começa mais perto do fim — mas a conferência de fatos continua" data-fig="5"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<path d="M20 60h180" stroke="var(--line2)" stroke-width="2"></path>
+<circle cx="30" cy="60" fill="var(--line2)" r="6"></circle>
+<circle cx="90" cy="60" fill="var(--line2)" r="6"></circle>
+<circle cx="150" cy="60" fill="var(--line2)" r="6"></circle>
+<circle cx="195" cy="60" fill="var(--accent)" r="7"></circle>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="30" y="45">sin guía</text>
+<path d="M20 130h180" stroke="var(--accent)" stroke-width="2"></path>
+<circle cx="150" cy="130" fill="var(--accent)" opacity=".5" r="6"></circle>
+<circle cx="195" cy="130" fill="var(--accent)" r="7"></circle>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="150" y="115">con guía: empieza aquí</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="195" y="160">aprobado</text>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="185">revisa nombre · fecha · destino: siempre</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Resalta cualquier fragmento para convertirlo en una tarjeta de repaso.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>Sin referencias, el asistente entrega el promedio que gusta a todos. El dato que falta son tus gustos, y solo tú puedes aportarlo.</li>
+<li>Los adjetivos se interpretan; los ejemplos se imitan. Dos ejemplos con una línea sobre lo que admiras valen más que cualquier descripción.</li>
+<li>La guía de estilo cabe en una página: ejemplos, reglas sobre lo que siempre se debe hacer y lo que nunca se debe hacer, escritas como se las dirías a un colaborador nuevo, y se adjunta a cada pedido.</li>
+<li>La guía acierta en los gustos, no en los hechos. La revisión del nombre, la fecha y el destino sigue siendo necesaria.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr darle al asistente una memoria de tus gustos que sirve para todas las solicitudes siguientes.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: abre lo último que corregiste en el asistente por segunda vez y convierte la corrección en una nueva línea de la guía.</p>
+<p class="na-hook">En la próxima clase, descubres que Astra tiene una cuota semanal que se agota rápido y aprendes a gastarla solo en lo que requiere el modelo más caro.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-5">← lección 5</a><a href="#aula-7">siguiente: cuota de uso y orquestar →</a></nav>
+<footer>Clase 6 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-6" type="application/json">
+[
+  {"front":"A arquiteta recebeu uma página escura e minimalista, o oposto do trabalho dela. Qual foi a causa, e o que ela anexa no próximo pedido?","back":"Faltou referência de gosto — ele entregou a média. No próximo pedido ela anexa 2 portfólios que admira, dizendo em uma frase o que gosta em cada um, mais o guia de regras."},
+  {"front":"Qual a diferença entre escrever 'elegante e profissional' e anexar um relatório dizendo 'gosto de como este separa os totais no alto'?","back":"O adjetivo é interpretado pelo assistente do jeito dele; o exemplo com a linha é imitado. O segundo tem algo concreto para copiar."},
+  {"front":"Você corrigiu o assistente pela segunda vez sobre o mesmo detalhe ('não use vermelho'). O que isso indica e o que você faz?","back":"Falta uma regra no guia. Acrescenta uma linha concreta ('nunca use vermelho') — o guia cresce a cada correção repetida."},
+  {"front":"A contadora anexou o guia de aparência ao pedido de um aviso de prazo e o texto saiu frio. O que aconteceu?","back":"Guia errado para a tarefa: o de aparência fala de tabelas, não de tom. Para avisos ela anexa o guia de tom ('cordial, direto, prazo em negrito')."},
+  {"front":"Com o guia, a primeira versão já veio no tom certo. Você pode liberar sem as três olhadas da aula 4?","back":"Não — o que o guia garante é a aparência e o tom; quem, quando e para onde continuam sem conferência nenhuma. As três olhadas valem em toda tarefa que sai do chat."}
+]
+</script>
+<!-- COMPLETUDE aula-6 | tipo=FUNDAMENTO | steps=5
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (5/5: arquiteta s1, contadora s2 (quiz), arquiteta s3, contadora s4, arquiteta+contadora s5)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (5/5)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~15 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-6"> presente (5 cartões: diagnóstico, contraste, diagnóstico, diagnóstico, decisão)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 5/5 / operação: recap sintetiza, cartões pedem diagnosticar ou decidir
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 2)
+  pool: quiz + cartões + qbefore-after (s3) + qanchor (s5) = 4 (teto 5) · densidade: quadros em s3 e s5, não adjacentes
+-->
+</section>
+<!-- ===== AULA 7 · FUNDAMENTO ===== -->
+<section class="view" data-aula="7" data-tempo="24min" id="v-aula-7">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 7</p>
+<h1>La cuota de uso y el truco<br/><em>de orquestar</em></h1>
+<p class="promise">Al terminar esta clase, podrás leer tu medidor de uso, prever en qué día de la semana se agotará a tu ritmo actual y separar las tareas de la semana entre las que requieren Astra y las que resuelve un modelo común.</p>
+<p class="why">Astra es rápido y potente, y por eso consume tu cuota semanal en horas, no en días. Quien lo descubre el jueves, con el trabajo a medias y el medidor en cero, pasa el fin de semana esperando que se renueve. La solución no es usarlo menos, sino usar el modelo caro solo donde marca la diferencia y dejar el resto para modelos más sencillos, incluidos en la misma suscripción.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — um talão de vales com alguns já destacados e um calendário com o dia da renovação circulado -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Un talonario de vales con algunas hojas ya desprendidas, junto a un calendario con el día de renovación marcado con un círculo." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="150" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="120" x="30" y="50"></rect>
+<rect fill="var(--accent)" height="22" opacity=".7" rx="3" width="96" x="42" y="62"></rect>
+<rect fill="var(--accent)" height="22" opacity=".7" rx="3" width="96" x="42" y="90"></rect>
+<rect fill="var(--accent)" height="22" opacity=".7" rx="3" width="96" x="42" y="118"></rect>
+<rect height="22" rx="3" stroke="var(--line2)" stroke-dasharray="3 3" stroke-width="1.5" width="96" x="42" y="146"></rect>
+<rect height="22" rx="3" stroke="var(--line2)" stroke-dasharray="3 3" stroke-width="1.5" width="96" x="42" y="174"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="90" y="40">cuota de la semana</text>
+<rect fill="var(--panel)" height="120" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="105" x="170" y="50"></rect>
+<rect fill="var(--line2)" height="22" rx="6" width="105" x="170" y="50"></rect>
+<g stroke="var(--muted)" stroke-width="1.5"><path d="M182 90h10M200 90h10M218 90h10M236 90h10M254 90h10M182 110h10M200 110h10M218 110h10M236 110h10M254 110h10M182 130h10M200 130h10M218 130h10"></path></g>
+<circle cx="241" cy="130" r="11" stroke="var(--warm)" stroke-width="2.5"></circle>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="10" text-anchor="middle" x="222" y="192">se renueva aquí</text>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="ferramenta" data-versao="Cota de uso dos planos Plus e Pro, set/2026">
+<h2><span class="n">01</span> El uso tiene un cupo semanal — y se agota rápido</h2>
+<p>Tu suscripción no te da uso ilimitado de Astra. Te da una <b>cuota</b>: una cantidad de trabajo por semana que se renueva en un día fijo. Cada tarea que ejecuta consume una parte, y las tareas grandes —modificar una página entera, armar un video, reorganizar una carpeta con decenas de archivos— consumen partes grandes. Funciona como un talonario de vales: cada pedido arranca una hoja y el talonario vuelve a llenarse el día de la renovación.</p>
+<p>Una referencia real del lanzamiento: una mañana de 40 minutos de tareas pesadas consumió cerca de una cuarta parte del cupo semanal. Al mismo ritmo, el cupo completo duraría menos de tres horas de trabajo intenso. No es motivo para usar menos, sino para elegir dónde usarlo.</p>
+<p>La contadora empezó la semana pidiéndole a Astra la reorganización completa de tres carpetas de clientes, cada una con cientos de archivos. El martes por la tarde, el medidor mostraba poco más de la mitad. No había hecho nada mal: había gastado el talonario en tres tareas que un modelo más sencillo habría hecho igual.</p>
+<div class="qbefore-after">
+<div class="qba-col qba-before"><p class="qba-lbl">Antes</p><p class="qba-txt">Todo con Astra: organizar carpetas, cambiar nombres de archivos, redactar avisos, rediseñar la página. Cupo agotado el miércoles; jueves y viernes sin asistente.</p></div>
+<div class="qba-col qba-depois"><p class="qba-lbl">Después</p><p class="qba-txt">Astra se encarga solo de lo que exige criterio y varias etapas: la página, el video, el análisis de los presupuestos. El resto va a un modelo común de la misma suscripción. La cuota dura toda la semana.</p></div>
+<div class="qba-saldo">Saldo: de <b>3 días</b> de Astra por semana para <b>5</b> — sin pagar nada más, solo eligiendo el modelo según la tarea.</div>
+</div>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="Painel de uso do aplicativo ChatGPT, set/2026">
+<h2><span class="n">02</span> Dónde ver: el medidor de uso y la fecha de renovación</h2>
+<p>La aplicación muestra un <b>medidor de uso</b> en el área de tu cuenta: una barra o un porcentaje de lo que aún queda de la semana, y la fecha en que se renueva la cuota. En algunos planes también hay una reserva extra que puedes activar cuando se acaba la cuota principal: una especie de segundo talonario, más pequeño. Abre el medidor una vez al día, al inicio del trabajo, como quien revisa el combustible antes de salir.</p>
+<p>Esto parece un panel de control, pero son solo dos números: cuánto queda y cuándo se renueva. Con esos dos datos, la cuenta es sencilla. Si el martes ya gastaste la mitad, al ritmo actual se acaba el jueves. Si quieres llegar al viernes, las tareas pesadas del miércoles y el jueves deben pasar a otro modelo o esperar a la renovación.</p>
+<p>La arquitecta anota los dos números en una esquina de su agenda cada mañana: «queda 60%, se renueva el sábado». En dos semanas empezó a prever, sin mirar, si la tarea que iba a pedir cabía en la cuota. La previsión vale más que el número: es lo que decide qué hacer hoy y qué dejar para después.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="fundamento">
+<h2><span class="n">03</span> No todas las tareas necesitan el mejor modelo</h2>
+<p>La misma suscripción incluye otros modelos, más sencillos y que consumen menos de tu cuota. Hacen muy bien el trabajo que no exige criterio en varias etapas: redactar un aviso a partir de tu guía de tono, renombrar archivos según una regla clara, resumir un documento, responder una pregunta directa. Usar Astra para eso es como llamar al socio sénior para engrapar papeles.</p>
+<p>El criterio es el mismo de la clase 1, aplicado al modelo. ¿La tarea exige entender varias pantallas, decidir durante el proceso, usar programas o crear algo desde cero? Astra. ¿La tarea consiste en aplicar muchas veces una regla clara o en redactar un texto a partir de una guía? Modelo común. Si tienes dudas, empieza con el común: si el resultado queda flojo, entonces cambia a Astra en la misma conversación.</p>
+<div class="quiz" data-answer="b">
+<p class="qk">Ponte a prueba</p><p class="q">La contadora tiene 4 tareas para hoy: renombrar 200 comprobantes por fecha, redactar 12 avisos a partir de la guía de tono, comparar 3 presupuestos en PDF y decidir cuál conviene más, y cargar 30 registros en el sistema de la municipalidad. ¿Cuáles van para Astra?</p>
+<button class="opt" data-fb="Renomear por regra clara e redigir a partir de um guia são tarefas de modelo comum — gastar Astra nelas é o que zera a cota na quarta." data-k="a">Todas: es el mejor modelo, así que todo sale mejor.</button>
+<button class="opt" data-fb="Exatamente — comparar e decidir exige juízo em várias etapas, e o sistema da prefeitura exige navegar e conferir telas. As outras duas são regra clara e guia de tom." data-k="b">Comparar los presupuestos y completar el sistema de la municipalidad.</button>
+<button class="opt" data-fb="Os avisos a partir de um guia são a tarefa mais simples da lista — um modelo comum resolve igual e não toca a cota." data-k="c">Solo los 12 avisos, porque son para clientes.</button>
+<p class="qfb"></p>
+</div>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Orquestar: el costoso planifica, el barato ejecuta</h2>
+<p>Hay un paso más allá de elegir el modelo para cada tarea: pedirle al propio Astra que distribuya el trabajo. Se llama <span class="gterm" data-def="Pedir ao modelo mais capaz que planeje e divida uma tarefa grande, e que passe as partes repetitivas para modelos mais simples, ficando só com a coordenação e a conferência." tabindex="0">orquestar</span>: Astra piensa el plan, lo divide en partes y envía las partes mecánicas a un modelo común, mientras se encarga de la coordinación y la revisión final. Pagas la cuota de Astra solo por la planificación; la ejecución repetitiva sale barata.</p>
+<p>Es lo que hace un estudio con un proyecto grande: el profesional sénior define el enfoque y revisa; el equipo dibuja los planos. Con el asistente, basta con incluir una frase en el pedido: «Planifica esta tarea, ejecuta las partes repetitivas con un modelo más simple y tráeme el resultado verificado». Entiende el pedido y organiza el trabajo así.</p>
+<p class="qanchor">Usa el mejor modelo para decidir, no para repetir. Para repetir puede bastar uno más sencillo, y así tu cupo te alcanza hasta el viernes.</p>
+<p>La arquitecta pidió: «Planifica la actualización del portafolio con los 8 proyectos nuevos. Define con Astra el formato de cada ficha, genera las 8 fichas con un modelo más sencillo siguiendo ese formato y muéstrame las 8 una al lado de la otra para que las revise». La planificación costó poco; las 8 fichas, casi nada. Revisarlas le tomó cinco minutos.</p>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- STEP 5 -->
+<section class="step" data-fig="5" data-kind="fundamento">
+<h2><span class="n">05</span> Una memoria compartida: notas que leen todos tus asistentes</h2>
+<p>Una limitación real de los asistentes de hoy: cada conversación sabe poco de las demás, y los distintos asistentes no saben nada unos de otros. Si usas Astra para una parte del trabajo y otro asistente para otra, cada uno empieza desde cero. La solución es sencilla y antigua: una <b>carpeta de notas</b> tuya, en archivos de texto comunes, que adjuntas o señalas en cada pedido —la guía de estilo de la lección 6 es su primer integrante.</p>
+<p>Pon en esa carpeta lo que te cansa tener que explicar: la guía de estilo, la lista de clientes con las preferencias de cada uno, las fechas límite fijas del año, la forma en que nombras los archivos. Las herramientas para tomar notas, como Obsidian, sirven bien porque guardan todo en texto simple que cualquier asistente puede leer. Pero una carpeta común con archivos de texto ya es suficiente.</p>
+<p>La contadora tiene la carpeta «memoria de la oficina» con cuatro archivos: guía de tono, guía de apariencia, calendario de plazos y ficha de clientes. Todo pedido empieza con «lee la carpeta memoria de la oficina antes». Astra, el modelo común y cualquier asistente futuro parten del mismo punto, y ella nunca más explicó el mismo plazo dos veces.</p>
+<div class="mobfig" data-mobfig="5"></div>
+<button class="readbtn" data-read="s5">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="tarefa" data-practice="p7">
+<p class="pk">Practica ahora <span class="pcount">0/3 completado</span></p>
+<h3 class="ph">Lee el medidor, calcula cuándo se acaba y divide la semana entre dos modelos</h3>
+<p class="pgoal">Meta: anotar los dos números del medidor, calcular cuándo se acaba la cuota a tu ritmo y clasificar las tareas de la semana como "Astra" o "modelo común". ~10 min.</p>
+<p class="psafe">Mirar el medidor no consume cupo, y clasificar tareas es solo una anotación — no se le pide nada al asistente en esta práctica. Si el medidor no aparece donde lo describe la lección, busca "uso" en la configuración de la cuenta; el panel cambia de lugar, pero los dos números siempre existen.</p>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Abre el medidor de uso en el área de tu cuenta y anota cuánto te queda (en porcentaje) y el día en que se renueva. Queda listo cuando hayas anotado ambos datos.</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Calcula el ritmo: ¿en cuántos días gastaste lo que ya gastaste? Si mantienes el mismo ritmo, ¿qué día se acaba la cuota? Está listo cuando hayas escrito un día de la semana como pronóstico.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Anota las tareas que piensas delegar hasta la renovación y marca cada una con "A" (requiere criterio en varias etapas y pantallas, o crear desde cero) o "C" (regla clara, texto a partir de una guía). Terminas cuando todas las tareas tengan una letra y las "A" quepan en la cuota restante.</label></li>
+</ol>
+<p class="pdone">Acabas de convertir la cuota de una sorpresa de jueves en un plan semanal, reservando el modelo caro para lo que solo él puede hacer.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a cota é um talão semanal: tarefas pesadas destacam folhas grandes, e o talão só enche no dia da renovação" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="24" rx="12" stroke="var(--line2)" stroke-width="2" width="180" x="20" y="30"></rect>
+<rect fill="var(--accent)" height="24" opacity=".35" rx="12" width="135" x="20" y="30"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="47">queda 75%</text>
+<rect fill="var(--warm)" height="30" opacity=".35" rx="6" width="60" x="20" y="80"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="50" y="99">página</text>
+<rect fill="var(--warm)" height="30" opacity=".35" rx="6" width="40" x="90" y="80"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="99">video</text>
+<rect fill="var(--accent)" height="30" opacity=".3" rx="4" width="14" x="140" y="80"></rect>
+<rect fill="var(--accent)" height="30" opacity=".3" rx="4" width="14" x="160" y="80"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="140">40 min pesados ≈ 1/4 de la semana</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="170">se renueva en un día fijo</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; dois números bastam — quanto resta e quando renova — para prever em que dia a cota acaba" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<text fill="var(--ink)" font-family="var(--serif)" font-size="30" text-anchor="middle" x="60" y="60">60%</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="80">queda</text>
+<text fill="var(--ink)" font-family="var(--serif)" font-size="30" text-anchor="middle" x="160" y="60">sáb</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="80">se renueva</text>
+<path d="M30 120h160" stroke="var(--line2)" stroke-width="2"></path>
+<circle cx="30" cy="120" fill="var(--muted)" r="4"></circle><circle cx="83" cy="120" fill="var(--accent)" r="4"></circle><circle cx="136" cy="120" fill="var(--warm)" r="4"></circle><circle cx="190" cy="120" fill="var(--muted)" r="4"></circle>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="30" y="140">lun</text>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="83" y="140">hoy</text>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="136" y="140">¿termina?</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="190" y="140">se renueva</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="175">la mitad el martes → se acaba el jueves</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a régua do modelo: juízo em várias etapas vai para o Astra; regra clara e texto a partir de guia vão para o modelo comum" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="120" opacity=".18" rx="8" stroke="var(--accent)" stroke-width="2" width="90" x="15" y="30"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="60" y="52">Astra</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="78">varias etapas</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="94">decidir a mitad de camino</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="110">modificar pantallas</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="126">armar desde cero</text>
+<rect height="120" rx="8" stroke="var(--line2)" stroke-width="2" width="90" x="115" y="30"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="160" y="52">modelo común</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="78">regla clara</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="94">muchas veces</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="110">texto de guía</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="126">resumen · pregunta</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="178">si tienes dudas, empieza por el común</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; orquestrar: o Astra planeja e confere; as partes repetitivas descem para um modelo mais simples" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect fill="var(--accent)" height="36" opacity=".25" rx="8" stroke="var(--accent)" stroke-width="2" width="80" x="70" y="18"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="40">Astra: planifica</text>
+<path d="M110 54v20M50 74h120M50 74v16M110 74v16M170 74v16" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="30" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="25" y="90"></rect>
+<rect height="30" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="85" y="90"></rect>
+<rect height="30" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="145" y="90"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="140">el modelo común ejecuta las partes</text>
+<path d="M110 150v14" stroke="var(--accent)" stroke-width="2"></path>
+<rect height="26" rx="8" stroke="var(--accent)" stroke-width="2" width="80" x="70" y="164"></rect>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="181">Astra: comprueba</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; uma pasta de anotações em texto simples que todo assistente lê antes de começar — a memória é sua, não da conversa" data-fig="5"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<path d="M30 60h60l10 12h90v90H30z" fill="var(--accent)" opacity=".15" stroke="var(--accent)" stroke-width="2"></path>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="100">guía de tono · guía de apariencia</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="116">plazos · ficha de los clientes</text>
+<path d="M60 162v-10M110 162v-10M160 162v-10" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="24" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="35" y="162"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="60" y="178">Astra</text>
+<rect height="24" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="85" y="162"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="178">común</text>
+<rect height="24" rx="6" stroke="var(--line2)" stroke-width="2" width="50" x="135" y="162"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="178">otro</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="45">"lee la carpeta antes"</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Las cifras de cupo mencionadas son las del lanzamiento (set/2026); los planes cambian, la lógica de la libreta no.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>La suscripción da una cuota semanal de Astra, que las tareas pesadas consumen en horas. El medidor muestra dos números: cuánto queda y cuándo se renueva.</li>
+<li>Con esos dos números puedes prever el día en que se acaba y decidir qué cabe hoy y qué puede esperar.</li>
+<li>Astra se encarga de lo que exige criterio en varias etapas, pantallas y montaje desde cero; las reglas claras y los textos basados en una guía se hacen con un modelo común de la misma suscripción.</li>
+<li>Orquestar es pedirle a Astra que planifique y verifique, y enviar las tareas repetitivas al modelo simple. Y una carpeta de notas de texto es la memoria que todo asistente lee antes de empezar.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr revisar el cupo, prever cuándo se acabará y reservar el modelo más caro para lo que solo él puede hacer.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: crea la carpeta «memoria de la oficina», coloca en ella la guía de estilo de la clase 6 y otro archivo con las fechas límite fijas de tu año.</p>
+<p class="na-hook">En la última clase, ves a Astra usar programas completos por su cuenta —un editor de video, un programa de 3D— y aprendes a reconocer cuándo tu tarea requiere una herramienta extra.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-6">← lección 6</a><a href="#aula-8">siguiente: herramientas a su disposición →</a></nav>
+<footer>Clase 7 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-7" type="application/json">
+[
+  {"front":"Na terça à tarde o medidor mostra 50% e renova no sábado. No mesmo ritmo, em que dia a cota acaba — e o que a contadora faz com as tarefas pesadas de quinta?","back":"Acaba na quinta (metade em dois dias de trabalho). As pesadas de quinta vão para um modelo comum ou esperam a renovação; as que exigem Astra são feitas na quarta."},
+  {"front":"Você precisa renomear 300 arquivos pela data que está no nome. Qual modelo, e por quê?","back":"Modelo comum — é uma regra clara aplicada muitas vezes, sem juízo no meio. Usar o Astra aqui gasta cota sem ganho."},
+  {"front":"Qual a diferença entre escolher o modelo por tarefa e orquestrar?","back":"Escolher por tarefa é você decidir, pedido a pedido. Orquestrar é pedir ao Astra que planeje, mande as partes repetitivas para um modelo simples e confira no fim — numa tarefa só."},
+  {"front":"A arquiteta usa o Astra para o portfólio e outro assistente para os e-mails, e cada um 'não sabe' o que o outro combinou com ela. O que ela cria?","back":"Uma pasta sua com arquivos de texto comuns (guia de estilo, ficha dos clientes, prazos) e começa todo pedido com 'leia a pasta antes'. Assim a memória fica com ela, não presa numa conversa."},
+  {"front":"O resultado do modelo comum veio fraco numa tarefa que você achou simples. O que faz?","back":"Troca para o Astra na mesma conversa — sem recomeçar. 'Na dúvida, comece pelo comum' inclui subir de modelo quando o comum não deu conta."}
+]
+</script>
+<!-- COMPLETUDE aula-7 | tipo=FUNDAMENTO | steps=5
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (5/5: contadora s1, arquiteta s2, contadora s3 (quiz), arquiteta s4, contadora s5)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (5/5)
+  [OK] practice           .practice[data-mode="tarefa"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~10 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-7"> presente (5 cartões: aplicação, decisão, contraste, aplicação, decisão)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 5/5 / operação: recap sintetiza, cartões aplicam a cenário
+  [OK] teste-se-FUND      tipo=FUNDAMENTO: presente (1 quiz data-fb, step 3)
+  pool: quiz + cartões + qbefore-after (s1) + qanchor (s4) = 4 (teto 5) · densidade: quadros em s1 e s4, não adjacentes · data-versao nos 2 steps-ferramenta
+-->
+</section>
+<!-- ===== AULA 8 · FERRAMENTA ===== -->
+<section class="view" data-aula="8" data-tempo="24min" id="v-aula-8">
+<header class="hero"><div class="hero-inner">
+<div>
+<p class="kicker">GPT-6 Astra en la práctica · Lección 8</p>
+<h1>Herramientas a la mano<br/><em>del asistente</em></h1>
+<p class="promise">Al terminar esta clase, podrás reconocer cuándo una tarea requiere una herramienta adicional —video, 3D, hoja de cálculo—, pedirle a Astra que la use y supervisar un trabajo de veinte minutos sin quedarte mirando la pantalla.</p>
+<p class="why">Hasta aquí, el asistente trabajó con lo que ya estaba en tu máquina: el navegador, tus archivos, el correo electrónico. Pero algunas tareas requieren un programa completo que nunca has abierto: un editor de video, un programa de modelado en 3D. La buena noticia es que abre y opera esos programas por su cuenta, cuando le das la herramienta adecuada. La mala noticia es que, sin saberlo, sigues pensando que «video» y «3D» son cosas que hay que contratar.</p>
+<p class="cue"><span class="arw">↓</span> role para estudiar</p>
+</div>
+<!-- herofig: registro METÁFORA-DO-MUNDO-REAL — uma caixa de ferramentas aberta com compartimentos etiquetados, e uma ferramenta nova sendo encaixada -->
+<div class="herofig"><svg aria-hidden="true" aria-label="Una caja de herramientas abierta, con compartimentos etiquetados, y una herramienta nueva colocándose en un compartimento vacío." fill="none" role="img" viewbox="0 0 300 240">
+<rect fill="var(--panel)" height="110" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="220" x="40" y="90"></rect>
+<path d="M40 120h220" stroke="var(--line2)" stroke-width="2"></path>
+<rect height="52" rx="4" stroke="var(--line2)" stroke-width="1.5" width="50" x="55" y="132"></rect>
+<rect height="52" rx="4" stroke="var(--line2)" stroke-width="1.5" width="50" x="115" y="132"></rect>
+<rect height="52" rx="4" stroke="var(--accent)" stroke-dasharray="4 3" stroke-width="2" width="50" x="175" y="132"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="80" y="162">video</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="140" y="162">hoja de cálculo</text>
+<path d="M200 40v70" stroke="var(--accent)" stroke-width="3"></path>
+<rect fill="var(--accent)" height="14" rx="3" width="24" x="188" y="30"></rect>
+<path d="M194 116l6 8 6-8" fill="none" stroke="var(--accent)" stroke-width="2"></path>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="200" y="200">3D</text>
+<path d="M120 90c0-30 60-30 60 0" stroke="var(--ink-soft)" stroke-width="2"></path>
+</svg></div>
+</div></header>
+<div class="layout">
+<div class="col">
+<!-- STEP 1 -->
+<section class="step" data-fig="1" data-kind="ferramenta" data-versao="Aplicativo Codex do ChatGPT: receitas e conexões, set/2026">
+<h2><span class="n">01</span> Recetas y conexiones: lo que amplía lo que sabe hacer</h2>
+<p>El asistente adquiere nuevas capacidades de dos maneras. La primera es una <span class="gterm" data-def="Um conjunto de instruções prontas que ensina o assistente a fazer um tipo de trabalho — como uma receita de família. No aplicativo ela aparece com o nome em inglês, 'skill'." tabindex="0">receta</span>: un documento de instrucciones que enseña una forma de trabajar: «así se arma un video corto de presentación». El segundo es una <span class="gterm" data-def="Uma ligação entre o assistente e um programa do seu computador, que permite a ele operar esse programa diretamente. No aplicativo aparece como 'conexão' ou pela sigla em inglês." tabindex="0">conexión</span>: una conexión con un programa que ya está en tu computadora, mediante la cual lo maneja como si usara el teclado.</p>
+<p>Esto parece cosa de programadores, pero funciona como la caja de herramientas de un profesional: la receta es el manual de una técnica; la conexión es la herramienta en sí. No necesitas saber montar ninguna de las dos. Necesitas saber que existen, pedirle que las use y, cuando te sugiera buscar una receta nueva en internet, pedirle que verifique su procedencia antes de usarla.</p>
+<p>La arquitecta descubrió la diferencia cuando pidió «un video de 30 segundos para presentar el estudio». El asistente dijo que necesitaría una receta para el video y preguntó si podía activar una. Ella respondió «puedes, y dime de dónde viene». La activó, explicó el origen y el video estuvo listo minutos después.</p>
+<div class="mobfig" data-mobfig="1"></div>
+<button class="readbtn" data-read="s1">marcar como leído</button>
+</section>
+<!-- STEP 2 -->
+<section class="step" data-fig="2" data-kind="ferramenta" data-versao="Receita de vídeo Remotion no aplicativo Codex, set/2026">
+<h2><span class="n">02</span> Un video de presentación con una sola solicitud</h2>
+<p>El caso más útil para la mayoría de las oficinas es el video corto: 30 segundos para presentar el servicio, con texto en pantalla, transiciones y música de fondo. Existe una receta gratuita para eso, llamada Remotion, que el asistente activa y usa. No abres ningún editor de video. Describes el video como se lo describirías a alguien que fuera a producirlo y recibes el archivo listo para publicar.</p>
+<div class="qsteps">
+<p class="qsk">Del pedido al video, en cuatro pasos</p>
+<ol>
+<li>En una conversación nueva y fijada, escribe: «Usa la receta de video <b>Remotion</b> para armar un video de 30 segundos presentando &lt;tu oficina&gt;." Si dice que necesita activarla, responde "puedes".</li>
+<li>Indica el contenido: nombre, a qué te dedicas, tres diferenciales, una frase de cierre; y adjunta el <b>guía de estilo</b> de la lección 6.</li>
+<li>Pide la prueba: "muéstrame el video listo y su duración".</li>
+<li>Míralo completo una vez. Comprueba el nombre, los tres diferenciales y si dura lo que pediste. Pide una ronda de ajustes si hace falta (clase 5).</li>
+</ol>
+</div>
+<p>La contadora pidió un video de 30 segundos para el comienzo del año: «cuatro plazos que todo pequeño negocio debe conocer». El nombre del estudio al inicio, cuatro fechas en pantalla, el tono sobrio de su guía y el cierre con el contacto. Lo publicó en el perfil del estudio ese mismo día. Nunca había abierto un editor de video y sigue sin abrir uno.</p>
+<div class="mobfig" data-mobfig="2"></div>
+<button class="readbtn" data-read="s2">marcar como leído</button>
+</section>
+<!-- STEP 3 -->
+<section class="step" data-fig="3" data-kind="ferramenta" data-versao="Conexão com o Blender pelo aplicativo Codex, set/2026">
+<h2><span class="n">03</span> Objetos en 3D: cuando opera un programa entero por su cuenta</h2>
+<p>El caso más impresionante del lanzamiento fue el de 3D. Con una conexión a un programa gratuito de modelado llamado Blender, el asistente crea objetos y escenas en tres dimensiones a partir de una descripción, e incluso llega a crear un juego sencillo, con pista, auto y sonido, con un solo pedido. Abre el programa, modela, ajusta y prueba durante unos veinte minutos, sin que nadie toque el teclado.</p>
+<p>Esto no es para todo el mundo, y está bien. La pregunta que debes hacerte es: "en mi trabajo, ¿hay algo que hoy diseño, armo o represento, y que un programa haría mejor?" Si lo hay, probablemente existe una conexión para ese programa. Si no, no necesitas esta parte: la lógica de la caja de herramientas sigue sirviendo para la hoja de cálculo, el editor de texto y el navegador.</p>
+<p>Para la arquitecta, la respuesta fue sí: pidió "una maqueta sencilla en 3D de este plano, con las paredes y las aberturas, para mostrarle al cliente por dónde entra la luz de la mañana". Veinte minutos después tenía una escena que podía girar en la pantalla. Para la contadora, la respuesta fue no — el programa que necesita que opere es la hoja de cálculo, y él ya tiene la conexión para hacerlo.</p>
+<div class="mobfig" data-mobfig="3"></div>
+<button class="readbtn" data-read="s3">marcar como leído</button>
+</section>
+<!-- STEP 4 -->
+<section class="step" data-fig="4" data-kind="fundamento">
+<h2><span class="n">04</span> Trabajos largos: déjalo trabajar, di «continúa» y revisa al final</h2>
+<p>Las tareas que requieren herramientas adicionales suelen tomar de diez a treinta minutos, y el asistente trabaja solo durante ese tiempo. No necesitas observarlo. Deja la conversación abierta, haz otra cosa y vuelve. Dos comportamientos son normales y no significan que haya un error: que te pida permiso para abrir o reiniciar un programa, y que se detenga después de reiniciarlo como si hubiera olvidado lo que estaba haciendo.</p>
+<p>En ambos casos, la respuesta es breve. Si pide permiso: lee y responde «puede». Si se detiene: vuelve a la misma conversación y escribe «continúa desde donde te quedaste». Retoma desde el punto en que estaba. Lo que no debes hacer es lo que ya advirtió la clase 3: abrir una conversación nueva y repetir el pedido, porque entonces el trabajo de veinte minutos empieza de cero.</p>
+<div class="qerr">
+<p class="qk">Error común</p>
+<p class="qerr-txt"><b>Volver a enviar el pedido completo cuando se reinicia o pide permiso a mitad de un trabajo largo.</b> Ocurre porque unos minutos de silencio parecen un bloqueo, y el instinto es «volver a enviarlo». Para evitarlo: espera su aviso, responde solo «puedes» o «continúa desde donde te quedaste» en la misma conversación y revisa la prueba al final, no el proceso a mitad de camino.</p>
+</div>
+<p>La contadora dejó al asistente preparando la hoja de cálculo anual de plazos con una conexión a la hoja de cálculo, salió a una reunión y volvió 25 minutos después. Había una solicitud de permiso pendiente. Respondió «puedes», el asistente terminó en tres minutos y ella revisó la prueba: la hoja de cálculo con las 48 fechas del año en cuatro pestañas.</p>
+<div class="mobfig" data-mobfig="4"></div>
+<button class="readbtn" data-read="s4">marcar como leído</button>
+</section>
+<!-- PRÁTICA -->
+<section class="practice" data-mode="prompt" data-practice="p8">
+<p class="pk">Practica ahora <span class="pcount">0/3 completado</span></p>
+<h3 class="ph">Tu video de presentación de 30 segundos, con una receta en manos del asistente</h3>
+<p class="pgoal">Meta: un video de 30 segundos que presente tu trabajo, creado por Astra con la receta de video y revisado por ti en cuanto al nombre, las ventajas y la duración. ~12 min, la mayor parte esperando.</p>
+<p class="psafe">El video se crea en una carpeta nueva, separada de tus archivos — nada tuyo se modifica. Si te pide activar la receta, "puede" es seguro: es una herramienta gratuita y conocida, y puedes pedirle que te diga de dónde viene. ¿No te gustó el video? Pide una ronda de ajustes; no se publicó nada.</p>
+<div class="pcodewrap"><button class="pcopy" type="button">copiar</button><pre class="pcode">Use a receita de vídeo Remotion para montar um vídeo de 30 segundos apresentando &lt;nome do escritório&gt;.
+Conteúdo, nesta ordem: o nome; o que fazemos em 1 frase (&lt;frase&gt;); três diferenciais (&lt;1&gt;, &lt;2&gt;, &lt;3&gt;); fechamento com &lt;contato&gt;.
+Siga o guia de estilo em anexo. Música de fundo discreta.
+Se precisar ativar a receita, pode — me diga de onde ela vem.
+Prova: me mostre o vídeo pronto e a duração exata.</pre></div>
+<ol class="psteps">
+<li><label><input data-ptask="1" type="checkbox"/> Completa el modelo, adjunta la guía de estilo y envíalo en una conversación nueva y fijada. Está listo cuando confirme que empezó — si te pide permiso para activar la receta, responde "puede".</label></li>
+<li><label><input data-ptask="2" type="checkbox"/> Déjalo trabajar. Haz otra cosa durante unos minutos y vuelve. Si te pide permiso o se detiene, responde «puedes» o «continúa desde donde te quedaste» en la misma conversación. Está listo cuando te muestre el video y la duración.</label></li>
+<li><label><input data-ptask="3" type="checkbox"/> Míralo completo una vez y comprueba: ¿el nombre está bien? ¿Aparecen los tres diferenciales? ¿Dura cerca de 30 segundos? Debes ver un video corto con texto en pantalla y música. Está listo cuando las tres respuestas sean sí, o cuando hayas pedido una ronda de ajustes.</label></li>
+</ol>
+<p class="pdone">Acabas de producir un video sin abrir un editor: dando una buena instrucción, usando la herramienta adecuada y revisando el resultado al final.</p>
+</section>
+</div>
+<aside class="rail"><div class="railsticky">
+<div class="figstage">
+<div class="fig on" data-cap="&lt;b&gt;Fig.&lt;/b&gt; dois jeitos de ampliar o assistente: a receita ensina uma técnica; a conexão liga um programa da sua máquina" data-fig="1"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<circle cx="110" cy="100" fill="var(--accent)" opacity=".22" r="28" stroke="var(--accent)" stroke-width="2"></circle>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="104">Astra</text>
+<rect height="40" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="70" x="10" y="30"></rect>
+<path d="M20 44h50M20 54h36" stroke="var(--muted)" stroke-width="2"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="45" y="90">receta: enseña</text>
+<path d="M80 60l10 20" stroke="var(--muted)" stroke-width="2"></path>
+<rect height="40" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="70" x="140" y="30"></rect>
+<rect fill="var(--line2)" height="24" rx="3" width="50" x="150" y="38"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="175" y="90">conexión: opera</text>
+<path d="M140 60l-10 20" stroke="var(--muted)" stroke-width="2"></path>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="160">"puedes activarlo; dime de dónde viene"</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; do pedido ao vídeo: a receita monta, o guia dá o tom, a prova é o arquivo com a duração" data-fig="2"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="40" rx="6" stroke="var(--ink-soft)" stroke-width="2" width="60" x="15" y="40"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="45" y="64">solicitud</text>
+<rect height="40" rx="6" stroke="var(--warm)" stroke-width="2" width="60" x="15" y="100"></rect>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="45" y="124">guía</text>
+<path d="M75 60h25M75 120h25M100 60v60" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="40" opacity=".2" rx="6" stroke="var(--accent)" stroke-width="2" width="50" x="100" y="70"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="125" y="94">receta</text>
+<path d="M150 90h20" stroke="var(--accent)" stroke-width="2"></path>
+<rect height="50" rx="6" stroke="var(--accent)" stroke-width="2" width="40" x="170" y="65"></rect>
+<path d="M184 82l14 8-14 8z" fill="var(--accent)"></path>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="190" y="135">0:30</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="175">ningún editor abierto por ti</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; a pergunta que decide se você precisa de 3D: existe algo que você desenha ou monta e um programa faria melhor?" data-fig="3"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<rect height="44" rx="8" stroke="var(--ink-soft)" stroke-width="2" width="180" x="20" y="20"></rect>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="38">diseño o armo algo que</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="52">¿un programa lo haría mejor?</text>
+<path d="M70 64v26M150 64v26" stroke="var(--muted)" stroke-width="2"></path>
+<rect fill="var(--accent)" height="60" opacity=".18" rx="8" stroke="var(--accent)" stroke-width="2" width="90" x="25" y="90"></rect>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="70" y="114">sí: maqueta,</text>
+<text fill="var(--ink)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="70" y="130">escena, objeto</text>
+<rect height="60" rx="8" stroke="var(--line2)" stroke-width="2" width="80" x="120" y="90"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="114">no: hoja de cálculo,</text>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="160" y="130">texto, navegador</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="178">la caja de herramientas sirve para ambos</text>
+</svg></div>
+<div class="fig" data-cap="&lt;b&gt;Fig.&lt;/b&gt; num trabalho longo, o meio é dele; o seu momento é a permissão, o 'continue' e a prova no fim" data-fig="4"><svg aria-hidden="true" fill="none" viewbox="0 0 220 200">
+<path d="M20 100h180" stroke="var(--line2)" stroke-width="3"></path>
+<circle cx="30" cy="100" fill="var(--accent)" r="7"></circle>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="30" y="80">solicitud</text>
+<rect fill="var(--accent)" height="16" opacity=".2" rx="8" width="130" x="45" y="92"></rect>
+<text fill="var(--muted)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="110" y="130">10–30 min, trabaja solo</text>
+<circle cx="95" cy="100" fill="var(--panel)" r="6" stroke="var(--warm)" stroke-width="2"></circle>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="95" y="80">"puedes"</text>
+<circle cx="140" cy="100" fill="var(--panel)" r="6" stroke="var(--warm)" stroke-width="2"></circle>
+<text fill="var(--warm)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="140" y="80">"continúa"</text>
+<circle cx="190" cy="100" fill="var(--accent)" r="7"></circle>
+<text fill="var(--accent)" font-family="var(--mono)" font-size="8" text-anchor="middle" x="190" y="80">prueba</text>
+<text fill="var(--ink-soft)" font-family="var(--mono)" font-size="9" text-anchor="middle" x="110" y="165">siempre en la misma conversación</text>
+</svg></div>
+</div>
+<p class="railcap"></p>
+<div class="steps-ind"></div>
+<p class="sidenote">Recetas y conexiones son los nombres en portugués; en la aplicación aparecen en inglés. Lo importante es saber pedirle que las use.</p>
+</div></aside>
+</div>
+<div class="fecho-wrap">
+<div class="recap-autor">
+<p class="rak">Resumen</p>
+<ul>
+<li>El asistente adquiere capacidades mediante recetas (instrucciones para una técnica) y conexiones (vínculos con programas de tu computadora). No configuras ninguna de las dos: le pides que las use y que compruebe su procedencia.</li>
+<li>El video corto de presentación es el caso más útil: una receta gratuita, un pedido con contenido y una guía de estilo, y la prueba es el archivo con la duración.</li>
+<li>El 3D existe y es impresionante, pero solo es para ti si diseñas o construyes algo que un programa haría mejor. La lógica de la caja de herramientas también se aplica a la hoja de cálculo.</li>
+<li>Los trabajos largos se ejecutan solos. Tu papel es responder «puedes» o «continúa» en la misma conversación y revisar la prueba al final, no el proceso a mitad de camino.</li>
+</ul>
+</div>
+<div class="next-action">
+<p class="nak">Tu próximo paso</p>
+<p class="na-win">Acabas de lograr darle al asistente una herramienta nueva y recibir un trabajo que antes habrías encargado a alguien.</p>
+<p class="na-action">En los próximos 15 minutos, en tu trabajo real: responde por escrito la pregunta del paso 03 —qué diseñas, construyes o representas hoy que un programa haría mejor— y, si la respuesta es sí, escribe el pedido con el formato de la clase 3 para mañana.</p>
+<p class="na-hook">El recorrido termina aquí. Lo que queda es una forma de trabajar: pedir un resultado, indicar dónde y pedir una prueba; adjuntar una guía de estilo; reservar la cuota para lo que exige criterio; revisar antes de dar el visto bueno. A partir de ahora, cada tarea nueva es simplemente la próxima aplicación de esto.</p>
+</div>
+</div>
+<nav class="lnav"><a href="#aula-7">← lección 7</a><a href="#trilha">completar la ruta →</a></nav>
+<footer>Clase 8 · GPT-6 Astra en la práctica · INEMA.CLUB PRO</footer>
+<script id="cards-8" type="application/json">
+[
+  {"front":"Qual a diferença entre uma receita e uma conexão, e o que você precisa saber montar de cada uma?","back":"A receita é um manual de técnica (como se monta um vídeo); a conexão é a ligação com um programa que já está no seu computador. Nenhuma das duas é montada por você: a sua parte é pedir o uso e exigir a procedência."},
+  {"front":"O assistente sugere buscar na internet uma receita nova para redesenhar a sua página. O que você responde?","back":"'Pode, mas confira a procedência antes de usar e me diga de onde vem.' A permissão vem com a condição de checar a origem."},
+  {"front":"A contadora se pergunta se precisa da parte de 3D do curso. Que pergunta decide isso, e qual é a resposta dela?","back":"'Existe algo que eu desenho ou monto que um programa faria melhor?' Para ela, não — o programa que ela precisa que ele opere é a planilha, e essa conexão já existe."},
+  {"front":"Você deixou um trabalho de vinte minutos rodando, voltou e a conversa está parada há cinco minutos sem aviso. O que faz — e o que não faz?","back":"Escreve 'continue de onde parou' na mesma conversa e espera. Não abre conversa nova nem reenvia o pedido, porque isso recomeça os vinte minutos do zero."}
+]
+</script>
+<!-- COMPLETUDE aula-8 | tipo=FERRAMENTA | steps=4
+  [OK] promise            .promise no cold-open (1)
+  [OK] why                .why após a promessa (1)
+  [OK] tempo              data-tempo no view + render no cold-open (1)
+  [OK] exemplo-profissao  exemplo aplicado em 100% dos steps (4/4: arquiteta s1, contadora s2, arquiteta+contadora s3, contadora s4)
+  [OK] apoio-visual       figura conceitual legendada em 100% dos steps (4/4)
+  [OK] practice           .practice[data-mode="prompt"] (exatamente 1)
+  [OK] psafe              .psafe dentro da prática (1)
+  [OK] pgoal-tempo        .pgoal com tempo declarado (~15 min)
+  [OK] recap-autor        .recap-autor no fecho (1)
+  [OK] next-action        .next-action no fecho (1)
+  [OK] cards              <script id="cards-8"> presente (4 cartões: contraste, decisão, aplicação, decisão)
+  [OK] anti-duplicacao    §11.3 — substring ≥6 palavras: nenhuma / forma: 4/4 / operação: recap sintetiza, cartões decidem ou aplicam
+  [N/A] teste-se-FUND     aula é FERRAMENTA (obrigação não se aplica); sem teste-se opcional
+  pool: qerr (s4) + qsteps (s2) + cartões = 3 (teto 5) · densidade: quadros em s2 e s4, não adjacentes · data-versao em 3 steps-ferramenta
+-->
+</section>
+<script src="../assets/curso.js"></script>
+</body>
+</html>
